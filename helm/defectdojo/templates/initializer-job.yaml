@@ -2,7 +2,11 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
+<<<<<<< HEAD
   name: {{ .Release.Name }}-initializer-{{ randAlphaNum 5 | lower }}
+=======
+  name: {{ .Release.Name }}-initializer-{{ {{ randAlphaNum 5  }} }}
+>>>>>>> rand job name
   labels:
     defectdojo.org/component: initializer
     app.kubernetes.io/name: {{ include "defectdojo.name" . }}
