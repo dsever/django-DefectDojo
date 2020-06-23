@@ -4,6 +4,7 @@ import logging
 import operator
 import json
 import httplib2
+import base64
 from datetime import datetime
 import googleapiclient.discovery
 from google.oauth2 import service_account
@@ -281,7 +282,8 @@ def add_findings(request, tid):
 
     if request.method == 'POST':
         form = AddFindingForm(request.POST)
-        if form['active'].value() is False or form['verified'].value() is False and 'jiraform-push_to_jira' in request.POST:
+        if (form['active'].value() is False or form['verified'].value() is False) \
+                and 'jiraform-push_to_jira' in request.POST:
             error = ValidationError('Findings must be active and verified to be pushed to JIRA',
                                     code='not_active_or_verified')
             if form['active'].value() is False:
@@ -575,13 +577,13 @@ def finding_bulk_update(request, tid):
                     from dojo.tools import tool_issue_updater
                     tool_issue_updater.async_tool_issue_update(finding)
 
-                    push_anyway = finding.jira_conf_new().jira_pkey_set.first().push_all_issues
-                    if form.cleaned_data['push_to_jira'] or push_anyway:
-                        if finding.jira_conf_new() is None:
-                            log_jira_alert(
-                                'Finding cannot be pushed to jira as there is no jira configuration for this product.',
-                                finding)
-                        else:
+                    if finding.jira_conf_new() is None:
+                        log_jira_alert('Finding cannot be pushed to jira as there is no jira configuration for this product.', finding)
+                    else:
+                        push_anyway = finding.jira_conf_new().jira_pkey_set.first().push_all_issues
+                        # push_anyway = JIRA_PKey.objects.get(
+                        #     product=finding.test.engagement.product).push_all_issues
+                        if form.cleaned_data['push_to_jira'] or push_anyway:
                             if JIRA_Issue.objects.filter(finding=finding).exists():
                                 update_issue_task.delay(finding, True)
                             else:
