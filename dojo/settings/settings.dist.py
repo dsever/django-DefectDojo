@@ -94,9 +94,19 @@ env = environ.Env(
     DD_SOCIAL_AUTH_GITLAB_API_URL=(str, 'https://gitlab.com'),
     DD_SOCIAL_AUTH_GITLAB_SCOPE=(list, ['api', 'read_user', 'openid', 'profile', 'email']),
     DD_SAML2_ENABLED=(bool, False),
+    DD_SAML2_AUTH=(str, ''),
+    DD_SAML2_METADATA_AUTO_CONF_URL=(str, ''),
+    DD_SAML2_CREATE_USER=(str, 'TRUE'),
+    DD_SAML2_ACTIVE_STATUS=(bool, True),
+    DD_SAML2_STAFF_STATUS=(bool, True),
+    DD_SAML2_SUPERUSER_STATUS=(bool, False),
+    DD_SAML2_ASSERTION_URL=(str, ''),
+
+
     # merging findings doesn't always work well with dedupe and reimport etc.
     # disable it if you see any issues (and report them on github)
     DD_DISABLE_FINDING_MERGE=(bool, False),
+
 )
 
 
@@ -336,25 +346,25 @@ SOCIAL_AUTH_TRAILING_SLASH = env('DD_SOCIAL_AUTH_TRAILING_SLASH')
 # For configuration and customization options, see django-saml2-auth documentation
 # https://github.com/fangli/django-saml2-auth
 SAML2_ENABLED = env('DD_SAML2_ENABLED')
+#SAML2_AUTH = env('DD_SAML2_AUTH')
 SAML2_AUTH = {
     # Metadata is required, choose either remote url or local file path
-    'METADATA_AUTO_CONF_URL': '[The auto(dynamic) metadata configuration URL of SAML2]',
-    'METADATA_LOCAL_FILE_PATH': '[The metadata configuration file path]',
+    'METADATA_AUTO_CONF_URL': env('DD_SAML2_METADATA_AUTO_CONF_URL'),
 
     # Optional settings below
     # Custom target redirect URL after the user get logged in. Default to /admin if not set. This setting will be overwritten if you have parameter ?next= specificed in the login URL.
     'DEFAULT_NEXT_URL': '/dashboard',
     # Create a new Django user when a new user logs in. Defaults to True.
-    'CREATE_USER': True,
+    'CREATE_USER': env('DD_SAML2_CREATE_USER'),
     'NEW_USER_PROFILE': {
         # The default group name when a new user logs in
         'USER_GROUPS': [],
         # The default active status for new users
-        'ACTIVE_STATUS': True,
+        'ACTIVE_STATUS': env('DD_SAML2_ACTIVE_STATUS'),
         # The staff status for new users
-        'STAFF_STATUS': True,
+        'STAFF_STATUS': env('DD_SAML2_STAFF_STATUS'),
         # The superuser status for new users
-        'SUPERUSER_STATUS': False,
+        'SUPERUSER_STATUS': env('DD_SAML2_SUPERUSER_STATUS'),
     },
     # Change Email/UserName/FirstName/LastName to corresponding SAML2 userprofile attributes.
     'ATTRIBUTES_MAP': {
@@ -363,14 +373,14 @@ SAML2_AUTH = {
         'first_name': 'FirstName',
         'last_name': 'LastName',
     },
-    'TRIGGER': {
-        'CREATE_USER': 'path.to.your.new.user.hook.method',
-        'BEFORE_LOGIN': 'path.to.your.login.hook.method',
-    },
+    # 'TRIGGER': {
+    #     'CREATE_USER': 'path.to.your.new.user.hook.method',
+    #     'BEFORE_LOGIN': 'path.to.your.login.hook.method',
+    # },
     # Custom URL to validate incoming SAML requests against
-    'ASSERTION_URL': 'https://mysite.com',
+    'ASSERTION_URL': env('DD_SAML2_ASSERTION_URL'),
     # Populates the Issuer element in authn request
-    'ENTITY_ID': 'https://mysite.com/saml2/acs/',
+    'ENTITY_ID': env('DD_SAML2_ENTITY_ID'),
     # Sets the Format property of authn NameIDPolicy element
     'NAME_ID_FORMAT': None,
     # Set this to True if you are running a Single Page Application (SPA) with Django Rest Framework (DRF), and are using JWT authentication to authorize client users
