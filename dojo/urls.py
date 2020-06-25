@@ -175,6 +175,8 @@ schema_view = get_schema_view(
 )
 
 urlpatterns = [
+    # The following line will replace the default user logout with the signout page (optional)
+    url(r'^saml2/logout/$', django_saml2_auth.views.signout),
     # These are the SAML2 related URLs. You can change "^saml2_auth/" regex to
     # any path you want, like "^sso_auth/", "^sso_login/", etc. (required)
     url(r'^saml2/', include('django_saml2_auth.urls')),
