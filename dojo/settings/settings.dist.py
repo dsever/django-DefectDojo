@@ -101,7 +101,7 @@ env = environ.Env(
     DD_SAML2_STAFF_STATUS=(bool, True),
     DD_SAML2_SUPERUSER_STATUS=(bool, False),
     DD_SAML2_ASSERTION_URL=(str, ''),
-
+    DD_SAML2_ENTITY_ID=(str, ''),
 
     # merging findings doesn't always work well with dedupe and reimport etc.
     # disable it if you see any issues (and report them on github)
