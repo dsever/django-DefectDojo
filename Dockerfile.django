@@ -53,11 +53,14 @@ RUN \
 RUN pip3 install --no-cache-dir --upgrade pip
 COPY --from=build /tmp/wheels /tmp/wheels
 COPY requirements.txt ./
+# With ugly fix to include Pan-Net certificates
 RUN pip3 install \
 	--no-cache-dir \
 	--no-index \
   --find-links=/tmp/wheels \
-  -r ./requirements.txt
+  -r ./requirements.txt && \
+  cat /usr/lib/ssl/certs/rootcax1.pem >> /usr/local/lib/python3.6/site-packages/certifi/cacert.pem && \
+  cat /usr/lib/ssl/certs/legacy-pannetss-chain.pem >> /usr/local/lib/python3.6/site-packages/certifi/cacert.pem
 COPY \
   docker/entrypoint-celery-beat.sh \
   docker/entrypoint-celery-worker.sh \
