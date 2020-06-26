@@ -39,10 +39,14 @@ RUN \
     default-mysql-client \
     libmariadb3 \
     xmlsec1 \
+    curl \
     git \
     # only required for the dbshell (used by the initializer job)
     postgresql-client \
     && \
+  curl http://info.pki.sec.in.pan-net.eu/crts/rootcax1.crt -o /usr/local/share/ca-certificates/rootcax1.crt && \
+  curl http://info.pki.sec.in.pan-net.eu/chains/legacy-pannetss-chain.crt -o /usr/local/share/ca-certificates/legacy-pannetss-chain.crt && \
+  update-ca-certificates && \
   apt-get clean && \
   rm -rf /var/lib/apt/lists && \
   true
