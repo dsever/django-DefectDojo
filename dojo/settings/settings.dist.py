@@ -102,6 +102,10 @@ env = environ.Env(
     DD_SAML2_SUPERUSER_STATUS=(bool, False),
     DD_SAML2_ASSERTION_URL=(str, ''),
     DD_SAML2_ENTITY_ID=(str, ''),
+    DD_SAML2_ATTRIBUTE_MAPS_EMAIL=(str,'Email'),
+    DD_SAML2_ATTRIBUTE_MAPS_USERNAME=(str,'UserName'),
+    DD_SAML2_ATTRIBUTE_MAPS_FIRSTNAME=(str,'FirstName'),
+    DD_SAML2_ATTRIBUTE_MAPS_LASTNAME=(str,'LastName'),
 
     # merging findings doesn't always work well with dedupe and reimport etc.
     # disable it if you see any issues (and report them on github)
@@ -366,12 +370,13 @@ SAML2_AUTH = {
         # The superuser status for new users
         'SUPERUSER_STATUS': env('DD_SAML2_SUPERUSER_STATUS'),
     },
+
     # Change Email/UserName/FirstName/LastName to corresponding SAML2 userprofile attributes.
     'ATTRIBUTES_MAP': {
-        'email': 'Email',
-        'username': 'UserName',
-        'first_name': 'FirstName',
-        'last_name': 'LastName',
+        'email': env('DD_SAML2_ATTRIBUTE_MAPS_EMAIL'),
+        'username': env('DD_SAML2_ATTRIBUTE_MAPS_USERNAME'),
+        'first_name': env('DD_SAML2_ATTRIBUTE_MAPS_FIRSTNAME'),
+        'last_name': env('DD_SAML2_ATTRIBUTE_MAPS_LASTNAME'),
     },
     # 'TRIGGER': {
     #     'CREATE_USER': 'path.to.your.new.user.hook.method',
