@@ -147,6 +147,7 @@ postgresql:
   slave:
     affinity: {}
     nodeSelector: {}
+  backup: true
 
 rabbitmq:
   enabled: true
