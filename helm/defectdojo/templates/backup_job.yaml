@@ -61,7 +61,4 @@ spec:
         - secretRef:
             name: {{ $fullName }}-extrasecrets
             optional: false
-
-
-{{- $fullName := include "defectdojo.fullname" . -}}
 {{- end }}
