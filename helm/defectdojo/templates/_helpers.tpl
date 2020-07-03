@@ -73,3 +73,6 @@ Create chart name and version as used by the chart label.
 {{- printf "%s" .Values.repositoryPrefix -}}/defectdojo-django
 {{- end -}}
 
+{{- define "backup.repository" -}}
+{{- printf "%s" .Values.repositoryPrefix -}}/postgres-backup-s3
+{{- end -}}

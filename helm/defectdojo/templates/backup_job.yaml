@@ -31,7 +31,7 @@ spec:
       {{- end }}
       containers:
       - name: postgres-backup-job
-        image: staff0rd/postgres-backup-s3
+        image: '{{ template "backup.repository" . }}:{{ .Values.tag }}'
         imagePullPolicy: {{ .Values.imagePullPolicy }}
         env:
         - name: S3_PREFIX
