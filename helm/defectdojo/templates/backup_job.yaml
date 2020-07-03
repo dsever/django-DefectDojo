@@ -1,5 +1,5 @@
 {{- $fullName := include "defectdojo.fullname" . -}}
-{{- if .Values.postgresql.backup -}}
+{{- if .Values.postgresql.backup_on_upgrade -}}
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -21,6 +21,7 @@ spec:
         defectdojo.org/component: backup-job
         app.kubernetes.io/name: {{ include "defectdojo.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
+        helm.sh/chart: {{ include "defectdojo.chart" . }}
     spec:
       restartPolicy: Never
       {{- if .Values.imagePullSecrets }}
@@ -37,26 +38,30 @@ spec:
         - name: POSTGRES_USER
           valueFrom:
             configMapKeyRef:
-              name: data
+              name: {{ $fullName }}
               key: DD_DATABASE_USER
         - name: POSTGRES_DATABASE
-          valueFrom:
-            configMapKeyRef:
-              name: data
-              key: DD_DATABASE_NAME
+          value: defectdojo
+          # valueFrom:
+          #   configMapKeyRef:
+          #     name: {{ $fullName }}
+          #     key: DD_DATABASE_NAME
         - name: POSTGRES_HOST
           value: {{ template "postgresql.hostname" . }}
         - name: S3_BUCKET
-          value: dd-dojo-project-dev  
+          valueFrom:
+            configMapKeyRef:
+              name: {{ $fullName }}
+              key: S3_BUCKET
         - name: POSTGRES_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: data
+              name: defectdojo-postgresql-specific
               key: postgresql-password
         envFrom:
         - secretRef:
             name: {{ $fullName }}-extrasecrets
-            optional: false
+            optional: true
 
 
 {{- $fullName := include "defectdojo.fullname" . -}}
