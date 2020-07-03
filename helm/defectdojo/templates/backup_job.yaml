@@ -1,3 +1,4 @@
+{{- $fullName := include "defectdojo.fullname" . -}}
 {{- if .Values.postgresql.backup -}}
 apiVersion: batch/v1
 kind: Job
@@ -30,5 +31,33 @@ spec:
       - name: postgres-backup-job
         image: staff0rd/postgres-backup-s3
         imagePullPolicy: {{ .Values.imagePullPolicy }}
+        env:
+        - name: S3_PREFIX
+          value: dev
+        - name: POSTGRES_USER
+          valueFrom:
+            configMapKeyRef:
+              name: data
+              key: DD_DATABASE_USER
+        - name: POSTGRES_DATABASE
+          valueFrom:
+            configMapKeyRef:
+              name: data
+              key: DD_DATABASE_NAME
+        - name: POSTGRES_HOST
+          value: {{ template "postgresql.hostname" . }}
+        - name: S3_BUCKET
+          value: dd-dojo-project-dev  
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: data
+              key: postgresql-password
+        envFrom:
+        - secretRef:
+            name: {{ $fullName }}-extrasecrets
+            optional: false
 
+
+{{- $fullName := include "defectdojo.fullname" . -}}
 {{- end }}
