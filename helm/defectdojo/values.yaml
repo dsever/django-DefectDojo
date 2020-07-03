@@ -148,6 +148,7 @@ postgresql:
     affinity: {}
     nodeSelector: {}
   backup_on_upgrade: true
+  schedule_backup_on: "0 * * * *"
 
 rabbitmq:
   enabled: true
