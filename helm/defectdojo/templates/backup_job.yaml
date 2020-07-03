@@ -34,7 +34,10 @@ spec:
         imagePullPolicy: {{ .Values.imagePullPolicy }}
         env:
         - name: S3_PREFIX
-          value: dev
+          valueFrom:
+            configMapKeyRef:
+              name: {{ $fullName }}
+              key: S3_PREFIX
         - name: POSTGRES_USER
           valueFrom:
             configMapKeyRef:
@@ -42,10 +45,6 @@ spec:
               key: DD_DATABASE_USER
         - name: POSTGRES_DATABASE
           value: defectdojo
-          # valueFrom:
-          #   configMapKeyRef:
-          #     name: {{ $fullName }}
-          #     key: DD_DATABASE_NAME
         - name: POSTGRES_HOST
           value: {{ template "postgresql.hostname" . }}
         - name: S3_BUCKET
@@ -61,7 +60,7 @@ spec:
         envFrom:
         - secretRef:
             name: {{ $fullName }}-extrasecrets
-            optional: true
+            optional: false
 
 
 {{- $fullName := include "defectdojo.fullname" . -}}
