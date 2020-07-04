@@ -78,5 +78,5 @@ Create chart name and version as used by the chart label.
 {{- end -}}
 
 {{- define "restore.repository" -}}
-{{- printf "%s" .Values.repositoryPrefix -}}/restore-backup-s3
+{{- printf "%s" .Values.repositoryPrefix -}}/postgres-restore-s3
 {{- end -}}

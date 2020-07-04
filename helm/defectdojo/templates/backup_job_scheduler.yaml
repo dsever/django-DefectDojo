@@ -5,7 +5,7 @@ kind: CronJob
 metadata:
   name: {{ .Release.Name }}-pg-backup-job-{{ randAlphaNum 5 | lower }}
   labels:
-    defectdojo.org/component: initializer
+    defectdojo.org/component: backup-job
     app.kubernetes.io/name: {{ include "defectdojo.name" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
