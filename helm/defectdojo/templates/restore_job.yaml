@@ -58,6 +58,10 @@ spec:
             secretKeyRef:
               name: defectdojo-postgresql-specific
               key: postgresql-password
+        {{ if .Values.postgresql.restore_file -}}
+        - name: RESTORE_FILE
+          value: {{ .Values.postgresql.restore_file }}
+        {{- end }}
         envFrom:
         - secretRef:
             name: {{ $fullName }}-extrasecrets
