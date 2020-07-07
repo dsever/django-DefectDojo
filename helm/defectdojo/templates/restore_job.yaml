@@ -62,6 +62,10 @@ spec:
         - name: RESTORE_FILE
           value: {{ .Values.postgresql.restore_file }}
         {{- end }}
+        {{ if .Values.postgresql.restore_to -}}
+        - name: RESTORE_TO
+          value: {{ .Values.postgresql.restore_to }}
+        {{- end }}
         envFrom:
         - secretRef:
             name: {{ $fullName }}-extrasecrets

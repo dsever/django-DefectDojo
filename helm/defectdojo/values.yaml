@@ -147,9 +147,11 @@ postgresql:
   slave:
     affinity: {}
     nodeSelector: {}
-  backup_on_upgrade: false
+#  backup_on_upgrade: true 
 #  schedule_backup_on: "0 1 * * *"
-  restore_from_backup: no
+#  restore_from_backup: yes
+#  restore_file: dev/2020/07/07/defectdojo_19:00:16Z.sql.gz.dat
+#  restore_to: latest
 
 rabbitmq:
   enabled: true
