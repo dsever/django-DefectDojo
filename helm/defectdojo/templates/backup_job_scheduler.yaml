@@ -1,0 +1,72 @@
+{{- $fullName := include "defectdojo.fullname" . -}}
+{{- if .Values.postgresql.schedule_backup_on -}}
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ .Release.Name }}-pg-backup-job-{{ randAlphaNum 5 | lower }}
+  labels:
+    defectdojo.org/component: backup-job
+    app.kubernetes.io/name: {{ include "defectdojo.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    helm.sh/chart: {{ include "defectdojo.chart" . }}
+#  annotations:
+#    "helm.sh/hook": post-install
+spec:
+  schedule: {{ .Values.postgresql.schedule_backup_on  }}
+  # successfulJobsHistoryLimit: 1
+  # failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+  #    ttlSecondsAfterFinished: {{ .Values.initializerKeepSeconds }}
+      template:
+        metadata:
+          labels:
+            defectdojo.org/component: backup-job
+            app.kubernetes.io/name: {{ include "defectdojo.name" . }}
+            app.kubernetes.io/instance: {{ .Release.Name }}
+            helm.sh/chart: {{ include "defectdojo.chart" . }}
+        spec:
+          restartPolicy: Never
+          {{- if .Values.imagePullSecrets }}
+          imagePullSecrets:
+          - name: {{ .Values.imagePullSecrets }}
+          {{- end }}
+          containers:
+          - name: postgres-backup-job
+            image: '{{ template "backup.repository" . }}:{{ .Values.tag }}'
+            imagePullPolicy: {{ .Values.imagePullPolicy }}
+            env:
+            - name: S3_PREFIX
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ $fullName }}
+                  key: S3_PREFIX
+            - name: POSTGRES_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ $fullName }}
+                  key: DD_DATABASE_USER
+            - name: POSTGRES_DATABASE
+              value: defectdojo
+                # valueFrom:
+                #   configMapKeyRef:
+                #     name: {{ $fullName }}
+                #     key: DD_DATABASE_NAME
+            - name: POSTGRES_HOST
+              value: {{ template "postgresql.hostname" . }}
+            - name: S3_BUCKET
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ $fullName }}
+                  key: S3_BUCKET
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: defectdojo-postgresql-specific
+                  key: postgresql-password
+            envFrom:
+            - secretRef:
+                name: {{ $fullName }}-extrasecrets
+                optional: false
+{{- end }}

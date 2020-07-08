@@ -4,16 +4,16 @@
 # The code for the build image should be idendical with the code in
 # Dockerfile.nginx to use the caching mechanism of Docker.
 
-# Using 3.5.7 to avoid compatibility issues that may be introduced by python 3.6 and 3.7.
-# Please upgrade before end-of-life in september 2020!
 # Ref: https://devguide.python.org/#branchstatus
-FROM python:3.5.9-buster@sha256:1baef6be00b82fbd77f1b60ab227a1dbede6f23825ce1b7f1e9c6f7d1469a45c as build
+FROM python:3.6.10-slim-buster@sha256:cf53095d28a6c1af7636357a4f1c87d56fd30a86694ab9c028737d2150eb331e as build
 WORKDIR /app
 RUN \
   apt-get -y update && \
   apt-get -y install \
+    build-essential \
     dnsutils \
     default-mysql-client \
+    libmariadb-dev-compat \
     postgresql-client \
     xmlsec1 \
     git \
@@ -24,7 +24,7 @@ RUN \
 COPY requirements.txt ./
 RUN pip3 wheel --wheel-dir=/tmp/wheels -r ./requirements.txt
 
-FROM python:3.5.9-slim-buster@sha256:dfb042910e4ef352b5c6aa223031ce768f53f4f1aacf95936152e5508162bcb0
+FROM python:3.6.10-slim-buster@sha256:cf53095d28a6c1af7636357a4f1c87d56fd30a86694ab9c028737d2150eb331e
 WORKDIR /app
 RUN \
   apt-get -y update && \
@@ -39,21 +39,28 @@ RUN \
     default-mysql-client \
     libmariadb3 \
     xmlsec1 \
+    curl \
     git \
     # only required for the dbshell (used by the initializer job)
     postgresql-client \
     && \
+  curl http://info.pki.sec.in.pan-net.eu/crts/rootcax1.crt -o /usr/local/share/ca-certificates/rootcax1.crt && \
+  curl http://info.pki.sec.in.pan-net.eu/chains/legacy-pannetss-chain.crt -o /usr/local/share/ca-certificates/legacy-pannetss-chain.crt && \
+  update-ca-certificates && \
   apt-get clean && \
   rm -rf /var/lib/apt/lists && \
   true
 RUN pip3 install --no-cache-dir --upgrade pip
 COPY --from=build /tmp/wheels /tmp/wheels
 COPY requirements.txt ./
+# With ugly fix to include Pan-Net certificates
 RUN pip3 install \
 	--no-cache-dir \
 	--no-index \
   --find-links=/tmp/wheels \
-  -r ./requirements.txt
+  -r ./requirements.txt && \
+  cat /usr/lib/ssl/certs/rootcax1.pem >> /usr/local/lib/python3.6/site-packages/certifi/cacert.pem && \
+  cat /usr/lib/ssl/certs/legacy-pannetss-chain.pem >> /usr/local/lib/python3.6/site-packages/certifi/cacert.pem
 COPY \
   docker/entrypoint-celery-beat.sh \
   docker/entrypoint-celery-worker.sh \
@@ -72,7 +79,7 @@ RUN \
   cp dojo/settings/settings.dist.py dojo/settings/settings.py
 COPY tests/ ./tests/
 RUN \
-  mkdir dojo/migrations && \
+  mkdir -p dojo/migrations && \
   chmod g=u dojo/migrations && \
   chmod g=u /var/run && \
   true

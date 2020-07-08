@@ -7,6 +7,7 @@ root = environ.Path(__file__) - 3  # Three folders back
 
 env = environ.Env(
     # Set casting and default values
+    DD_SITE_URL=(str, 'http://localhost:8080'),
     DD_DEBUG=(bool, False),
     DD_DJANGO_METRICS_ENABLED=(bool, False),
     DD_LOGIN_REDIRECT_URL=(str, '/'),
@@ -92,6 +93,24 @@ env = environ.Env(
     DD_SOCIAL_AUTH_GITLAB_SECRET=(str, ''),
     DD_SOCIAL_AUTH_GITLAB_API_URL=(str, 'https://gitlab.com'),
     DD_SOCIAL_AUTH_GITLAB_SCOPE=(list, ['api', 'read_user', 'openid', 'profile', 'email']),
+    DD_SAML2_ENABLED=(bool, False),
+    DD_SAML2_AUTH=(str, ''),
+    DD_SAML2_METADATA_AUTO_CONF_URL=(str, ''),
+    DD_SAML2_CREATE_USER=(str, 'TRUE'),
+    DD_SAML2_ACTIVE_STATUS=(bool, True),
+    DD_SAML2_STAFF_STATUS=(bool, True),
+    DD_SAML2_SUPERUSER_STATUS=(bool, False),
+    DD_SAML2_ASSERTION_URL=(str, ''),
+    DD_SAML2_ENTITY_ID=(str, ''),
+    DD_SAML2_ATTRIBUTE_MAPS_EMAIL=(str,'Email'),
+    DD_SAML2_ATTRIBUTE_MAPS_USERNAME=(str,'UserName'),
+    DD_SAML2_ATTRIBUTE_MAPS_FIRSTNAME=(str,'FirstName'),
+    DD_SAML2_ATTRIBUTE_MAPS_LASTNAME=(str,'LastName'),
+
+    # merging findings doesn't always work well with dedupe and reimport etc.
+    # disable it if you see any issues (and report them on github)
+    DD_DISABLE_FINDING_MERGE=(bool, False),
+
 )
 
 
@@ -130,6 +149,7 @@ DEBUG = env('DD_DEBUG')
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/2.0/ref/settings/#allowed-hosts
+SITE_URL = env('DD_SITE_URL')
 ALLOWED_HOSTS = tuple(env.list('DD_ALLOWED_HOSTS', default=['localhost', '127.0.0.1']))
 
 # Raises django's ImproperlyConfigured exception if SECRET_KEY not in os.environ
@@ -326,6 +346,54 @@ SOCIAL_AUTH_AUTH0_DOMAIN = env('DD_SOCIAL_AUTH_AUTH0_DOMAIN')
 SOCIAL_AUTH_AUTH0_SCOPE = env('DD_SOCIAL_AUTH_AUTH0_SCOPE')
 SOCIAL_AUTH_TRAILING_SLASH = env('DD_SOCIAL_AUTH_TRAILING_SLASH')
 
+
+# For configuration and customization options, see django-saml2-auth documentation
+# https://github.com/fangli/django-saml2-auth
+SAML2_ENABLED = env('DD_SAML2_ENABLED')
+#SAML2_AUTH = env('DD_SAML2_AUTH')
+SAML2_AUTH = {
+    # Metadata is required, choose either remote url or local file path
+    'METADATA_AUTO_CONF_URL': env('DD_SAML2_METADATA_AUTO_CONF_URL'),
+
+    # Optional settings below
+    # Custom target redirect URL after the user get logged in. Default to /admin if not set. This setting will be overwritten if you have parameter ?next= specificed in the login URL.
+    'DEFAULT_NEXT_URL': '/dashboard',
+    # Create a new Django user when a new user logs in. Defaults to True.
+    'CREATE_USER': env('DD_SAML2_CREATE_USER'),
+    'NEW_USER_PROFILE': {
+        # The default group name when a new user logs in
+        'USER_GROUPS': [],
+        # The default active status for new users
+        'ACTIVE_STATUS': env('DD_SAML2_ACTIVE_STATUS'),
+        # The staff status for new users
+        'STAFF_STATUS': env('DD_SAML2_STAFF_STATUS'),
+        # The superuser status for new users
+        'SUPERUSER_STATUS': env('DD_SAML2_SUPERUSER_STATUS'),
+    },
+
+    # Change Email/UserName/FirstName/LastName to corresponding SAML2 userprofile attributes.
+    'ATTRIBUTES_MAP': {
+        'email': env('DD_SAML2_ATTRIBUTE_MAPS_EMAIL'),
+        'username': env('DD_SAML2_ATTRIBUTE_MAPS_USERNAME'),
+        'first_name': env('DD_SAML2_ATTRIBUTE_MAPS_FIRSTNAME'),
+        'last_name': env('DD_SAML2_ATTRIBUTE_MAPS_LASTNAME'),
+    },
+    # 'TRIGGER': {
+    #     'CREATE_USER': 'path.to.your.new.user.hook.method',
+    #     'BEFORE_LOGIN': 'path.to.your.login.hook.method',
+    # },
+    # Custom URL to validate incoming SAML requests against
+    'ASSERTION_URL': env('DD_SAML2_ASSERTION_URL'),
+    # Populates the Issuer element in authn request
+    'ENTITY_ID': env('DD_SAML2_ENTITY_ID'),
+    # Sets the Format property of authn NameIDPolicy element
+    'NAME_ID_FORMAT': None,
+    # Set this to True if you are running a Single Page Application (SPA) with Django Rest Framework (DRF), and are using JWT authentication to authorize client users
+    'USE_JWT': False,
+    # Redirect URL for the client if you are using JWT auth with DRF. See explanation below
+    'FRONTEND_URL': None,
+}
+
 LOGIN_EXEMPT_URLS = (
     r'^%sstatic/' % URL_PREFIX,
     r'^%swebhook/' % URL_PREFIX,
@@ -334,7 +402,9 @@ LOGIN_EXEMPT_URLS = (
     r'^%sfinding/image/(?P<token>[^/]+)$' % URL_PREFIX,
     r'^%sapi/v2/' % URL_PREFIX,
     r'complete/',
-    r'empty_survey/([\d]+)/answer'
+    r'saml2/login',
+    r'saml2/acs',
+    r'empty_questionnaire/([\d]+)/answer'
 )
 
 # ------------------------------------------------------------------------------
@@ -477,13 +547,11 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'polymorphic',  # provides admin templates
-    'overextends',
     'django.contrib.admin',
     'django.contrib.humanize',
     'gunicorn',
     'tastypie',
     'auditlog',
-    'defectDojo_engagement_survey',
     'dojo',
     'tastypie_swagger',
     'watson',
@@ -508,6 +576,7 @@ INSTALLED_APPS = (
 DJANGO_MIDDLEWARE_CLASSES = [
     # 'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'dojo.middleware.DojoSytemSettingsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.middleware.security.SecurityMiddleware',
@@ -615,11 +684,15 @@ HASHCODE_FIELDS_PER_SCANNER = {
     'Dependency Check Scan': ['cve', 'file_path'],
     # possible improvment: in the scanner put the library name into file_path, then dedup on cwe + file_path + severity
     'NPM Audit Scan': ['title', 'severity', 'file_path', 'cve', 'cwe'],
+    # possible improvment: in the scanner put the library name into file_path, then dedup on cwe + file_path + severity
+    'Yarn Audit Scan': ['title', 'severity', 'file_path', 'cve', 'cwe'],
     # possible improvment: in the scanner put the library name into file_path, then dedup on cve + file_path + severity
     'Whitesource Scan': ['title', 'severity', 'description'],
-    'ZAP Scan': ['cwe', 'endpoints', 'severity'],
+    'ZAP Scan': ['title', 'cwe', 'endpoints', 'severity'],
     'Qualys Scan': ['title', 'endpoints', 'severity'],
     'PHP Symfony Security Check': ['title', 'cve'],
+    'Clair Scan': ['title', 'cve', 'description', 'severity'],
+    'Clair Klar Scan': ['title', 'description', 'severity'],
     # for backwards compatibility because someone decided to rename this scanner:
     'Symfony Security Check': ['title', 'cve'],
     'DSOP Scan': ['cve'],
@@ -633,6 +706,7 @@ HASHCODE_ALLOWS_NULL_CWE = {
     'SonarQube Scan': False,
     'Dependency Check Scan': True,
     'NPM Audit Scan': True,
+    'Yarn Audit Scan': True,
     'Whitesource Scan': True,
     'ZAP Scan': False,
     'Qualys Scan': True,
@@ -668,14 +742,19 @@ DEDUPLICATION_ALGORITHM_PER_PARSER = {
     'SonarQube Scan': DEDUPE_ALGO_HASH_CODE,
     'Dependency Check Scan': DEDUPE_ALGO_HASH_CODE,
     'NPM Audit Scan': DEDUPE_ALGO_HASH_CODE,
+    'Yarn Audit Scan': DEDUPE_ALGO_HASH_CODE,
     'Whitesource Scan': DEDUPE_ALGO_HASH_CODE,
     'ZAP Scan': DEDUPE_ALGO_HASH_CODE,
     'Qualys Scan': DEDUPE_ALGO_HASH_CODE,
     'PHP Symfony Security Check': DEDUPE_ALGO_HASH_CODE,
+    'Clair Scan': DEDUPE_ALGO_HASH_CODE,
+    'Clair Klar Scan': DEDUPE_ALGO_HASH_CODE,
     # for backwards compatibility because someone decided to rename this scanner:
     'Symfony Security Check': DEDUPE_ALGO_HASH_CODE,
     'DSOP Scan': DEDUPE_ALGO_HASH_CODE,
 }
+
+DISABLE_FINDING_MERGE = env('DD_DISABLE_FINDING_MERGE')
 
 # ------------------------------------------------------------------------------
 # JIRA
@@ -704,8 +783,7 @@ LOGGING = {
     'disable_existing_loggers': False,
     'formatters': {
         'verbose': {
-            'format': '[%(asctime)s] %(levelname)s '
-                      '[%(name)s:%(lineno)d] %(message)s',
+            'format': '[%(asctime)s] %(levelname)s [%(name)s:%(lineno)d] %(message)s',
             'datefmt': '%d/%b/%Y %H:%M:%S',
         },
         'simple': {
@@ -745,7 +823,12 @@ LOGGING = {
             'handlers': ['console'],
             'level': 'INFO',
             'propagate': False,
-        }
+        },
+        'MARKDOWN': {
+            'handlers': ['console'],
+            'level': 'WARNING',
+            'propagate': False,
+        },
     }
 }
 
@@ -755,3 +838,6 @@ SILENCED_SYSTEM_CHECKS = ['mysql.E001']
 
 # Issue on benchmark : "The number of GET/POST parameters exceeded settings.DATA_UPLOAD_MAX_NUMBER_FIELD S"
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 10240
+
+# Maximum size of a scan file in MB
+SCAN_FILE_MAX_SIZE = 100

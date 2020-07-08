@@ -1,8 +1,9 @@
 {{- $fullName := include "defectdojo.fullname" . -}}
+{{- if not .Values.postgresql.restore_from_backup -}}
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: {{ .Release.Name }}-initializer
+  name: {{ .Release.Name }}-initializer-{{ randAlphaNum 5 | lower }}
   labels:
     defectdojo.org/component: initializer
     app.kubernetes.io/name: {{ include "defectdojo.name" . }}
@@ -57,4 +58,9 @@ spec:
       nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      {{- with .Values.initializer.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
   backoffLimit: 1
+{{- end }}

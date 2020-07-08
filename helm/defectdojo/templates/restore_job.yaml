@@ -1,0 +1,73 @@
+{{- $fullName := include "defectdojo.fullname" . -}}
+{{- if .Values.postgresql.restore_from_backup -}}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ .Release.Name }}-pg-restore-job-{{ randAlphaNum 5 | lower }}
+  labels:
+    defectdojo.org/component: restore-job
+    app.kubernetes.io/name: {{ include "defectdojo.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    helm.sh/chart: {{ include "defectdojo.chart" . }}
+  annotations:
+    "helm.sh/hook": post-install
+    "helm.sh/hook-delete-policy": hook-failed
+
+spec:
+#  ttlSecondsAfterFinished: {{ .Values.initializerKeepSeconds }}
+  template:
+    metadata:
+      labels:
+        defectdojo.org/component: restore-job
+        app.kubernetes.io/name: {{ include "defectdojo.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        helm.sh/chart: {{ include "defectdojo.chart" . }}
+    spec:
+      restartPolicy: OnFailure
+      {{- if .Values.imagePullSecrets }}
+      imagePullSecrets:
+      - name: {{ .Values.imagePullSecrets }}
+      {{- end }}
+      containers:
+      - name: postgres-backup-job
+        image: '{{ template "restore.repository" . }}:{{ .Values.tag }}'
+        imagePullPolicy: {{ .Values.imagePullPolicy }}
+        env:
+        - name: S3_PREFIX
+          valueFrom:
+            configMapKeyRef:
+              name: {{ $fullName }}
+              key: S3_PREFIX
+        - name: POSTGRES_USER
+          valueFrom:
+            configMapKeyRef:
+              name: {{ $fullName }}
+              key: DD_DATABASE_USER
+        - name: POSTGRES_DATABASE
+          value: defectdojo
+        - name: POSTGRES_HOST
+          value: {{ template "postgresql.hostname" . }}
+        - name: S3_BUCKET
+          valueFrom:
+            configMapKeyRef:
+              name: {{ $fullName }}
+              key: S3_BUCKET
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: defectdojo-postgresql-specific
+              key: postgresql-password
+        {{ if .Values.postgresql.restore_file -}}
+        - name: RESTORE_FILE
+          value: {{ .Values.postgresql.restore_file }}
+        {{- end }}
+        {{ if .Values.postgresql.restore_to -}}
+        - name: RESTORE_TO
+          value: {{ .Values.postgresql.restore_to }}
+        {{- end }}
+        envFrom:
+        - secretRef:
+            name: {{ $fullName }}-extrasecrets
+            optional: false
+{{- end }}
