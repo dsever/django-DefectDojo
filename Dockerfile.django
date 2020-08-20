@@ -78,9 +78,11 @@ RUN \
   true
 USER root
 # RUN chmod -R 0777 /app
-RUN addgroup -S app && adduser -S app -G app && chown -R app:app /app
+RUN  adduser --system app  && chown -R app:app /app
+
 
 USER app
+run id
 ENV \
   DD_ADMIN_USER=admin \
   DD_ADMIN_MAIL=admin@defectdojo.local \
