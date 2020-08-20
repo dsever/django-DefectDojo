@@ -79,7 +79,6 @@ RUN \
 USER root
 RUN addgroup --system app && adduser --system app  && chown -R app:app /app
 USER app
-run id
 ENV \
   DD_ADMIN_USER=admin \
   DD_ADMIN_MAIL=admin@defectdojo.local \
