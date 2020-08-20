@@ -77,10 +77,7 @@ RUN \
   chmod g=u /var/run && \
   true
 USER root
-# RUN chmod -R 0777 /app
-RUN  adduser --system app  && chown -R app:app /app
-
-
+RUN addgroup --system app && adduser --system app  && chown -R app:app /app
 USER app
 run id
 ENV \
