@@ -77,7 +77,7 @@ RUN \
   chmod g=u /var/run && \
   true
 USER root
-RUN addgroup --system app && adduser --system app  && chown -R app:app /app
+RUN  adduser --system --group app && chown -R app:app /app
 USER app
 ENV \
   DD_ADMIN_USER=admin \
