@@ -155,7 +155,7 @@ if [ -z "${TEST}" ]; then
 
   travis_fold start check_container_user
   echo "Checkig dd user is not root"
-  sudo kubectl exec -i $(sudo kubectl get pods -o name  | grep django) -c uwsgi id
+  sudo kubectl exec -i $(sudo kubectl get pods -o name  | grep django| sed 's/pod\///g') -c uwsgi id
   travis_fold end check_container_user
   # Run all tests
   travis_fold start defectdojo_tests
