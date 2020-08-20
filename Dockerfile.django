@@ -77,8 +77,10 @@ RUN \
   chmod g=u /var/run && \
   true
 USER root
-RUN chmod -R 0777 /app
-USER 1001
+# RUN chmod -R 0777 /app
+RUN addgroup -S app && adduser -S app -G app
+chown -R app:app /app
+USER app
 ENV \
   DD_ADMIN_USER=admin \
   DD_ADMIN_MAIL=admin@defectdojo.local \
