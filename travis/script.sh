@@ -154,8 +154,8 @@ if [ -z "${TEST}" ]; then
   travis_fold end minikube_install
 
   travis_fold start check_container_user
-  echo "Checkig dd user is not root" 
-  sudo kubectl exec -i $(kubectl get pods -o name  | grep django) -c uwsgi id
+  echo "Checkig dd user is not root"
+  sudo kubectl exec -i $(sudo kubectl get pods -o name  | grep django) -c uwsgi id
   travis_fold end check_container_user
   # Run all tests
   travis_fold start defectdojo_tests
