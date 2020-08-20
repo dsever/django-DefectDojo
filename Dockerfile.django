@@ -78,8 +78,8 @@ RUN \
   true
 USER root
 # RUN chmod -R 0777 /app
-RUN addgroup -S app && adduser -S app -G app
-chown -R app:app /app
+RUN addgroup -S app && adduser -S app -G app && chown -R app:app /app
+
 USER app
 ENV \
   DD_ADMIN_USER=admin \
