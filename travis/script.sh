@@ -71,7 +71,7 @@ if [ -z "${TEST}" ]; then
   sudo helm dependency update ./helm/defectdojo
 
   # Set Helm settings for the broker
-  case "${BROKER}" in 
+  case "${BROKER}" in
     rabbitmq)
       HELM_BROKER_SETTINGS=" \
         --set redis.enabled=false \
@@ -153,6 +153,9 @@ if [ -z "${TEST}" ]; then
   sudo kubectl get pods
   travis_fold end minikube_install
 
+  travis_fold start check_container_user
+  kubectl exec -i $(kubectl get pods -o name  | grep django) -c uwsgi id
+  travis_fold end check_container_user
   # Run all tests
   travis_fold start defectdojo_tests
   echo "Running tests."
