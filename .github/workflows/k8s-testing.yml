@@ -183,9 +183,8 @@ jobs:
       - name: Check Application
         run: |-
              echo "Waiting for init job..."
-             RET=kubectl wait  --for="condition=Complete" job --timeout=500s --selector=defectdojo.org/component=initializer
-             echo $RET
-             if [[ $RET != 0 ]]; then
+             kubectl wait  --for="condition=Complete" job --timeout=500s --selector=defectdojo.org/component=initializer -o json
+             if [[ ${?} != 0 ]]; then
                echo "ERROR: Init job"
                kubectl get pods
                kubectl logs    --selector=defectdojo.org/component=initializer
