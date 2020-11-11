@@ -128,4 +128,3 @@ docker/extra_settings/*
 
 # Helm dependencies
 helm/defectdojo/charts
-
