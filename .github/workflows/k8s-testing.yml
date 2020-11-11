@@ -186,6 +186,7 @@ jobs:
              kubectl wait  --for="condition=Complete" job --timeout=500s --selector=defectdojo.org/component=initializer
              if [[ ${?} != 0 ]]; then
                echo "ERROR: Init job"
+               kubectl get pods
                kubectl logs    --selector=defectdojo.org/component=initializer
                exit 1
              fi
@@ -193,12 +194,14 @@ jobs:
              kubectl wait  --for=condition=ready  pod --timeout=500s --selector=defectdojo.org/component=celery
              if [[ ${?} != 0 ]]; then
                echo "ERROR: Celery "
+               kubectl get pods
                kubectl logs --selector=defectdojo.org/component=celery
                exit 1
              fi
              echo "Waiting for django pod..."
              kubectl wait  --for=condition=ready  pod --timeout=500s --selector=defectdojo.org/component=django
              if [[ ${?} != 0 ]];then
+               kubectl get pods
                echo "ERROR: django "
                kubectl logs  --selector=defectdojo.org/component=django -c uwsgi
                exit 1
