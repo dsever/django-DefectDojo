@@ -181,7 +181,7 @@ jobs:
              kubectl get ingress
              kubectl get services
       - name: Check Application
-        shall: bash {0}
+        shell: bash {0}
         run: |-
              echo "Waiting for init job..."
              kubectl wait  --for="condition=Complete" job --timeout=5s --selector=defectdojo.org/component=initializer -o json
