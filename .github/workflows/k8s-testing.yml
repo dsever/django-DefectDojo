@@ -181,7 +181,6 @@ jobs:
              kubectl get ingress
              kubectl get services
       - name: Check Application
-        shell: bash {0}
         run: |-
              wait to complete(){
                kubectl wait  --for=$1 $2 --timeout=5s --selector=$3
