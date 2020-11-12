@@ -189,7 +189,7 @@ jobs:
              }
              echo "Waiting for init job..."
 
-             $RET=to_complete  "condition=Complete" job "defectdojo.org/component=initializer"
+             $RET=$(to_complete  "condition=Complete" job "defectdojo.org/component=initializer")
              echo $RET
              if [[ $RET != 0 ]]; then
                echo "ERROR: Init job"
