@@ -50,7 +50,6 @@ class ScanTypeTest(BaseTestCase):
         driver.find_element_by_id("id_name").send_keys("Scan Visibility Test")
         driver.find_element_by_xpath('//*[@id="id_deduplication_on_engagement"]').click()
         driver.find_element_by_name("_Import Scan Results").click()
-
         self.assertTrue("Acunetix_Scan" not in self.driver.find_element_by_id("id_scan_type").text)
 
 
@@ -58,9 +57,8 @@ def suite():
     suite = unittest.TestSuite()
     suite.addTest(BaseTestCase('test_login'))
     suite.addTest(ScanTypeTest('test_disable_Acunetix_Scan_scanner'))
-    suite.addTest(ScanTypeTest('test_enable_Acunetix_Scan_scanner'))
     suite.addTest(ScanTypeTest('test_Acunetix_Scan_visibility'))
-    #suite.addTest(ScanTypeTest('test_Acunetix_Scan_visibility_enable'))
+    suite.addTest(ScanTypeTest('test_enable_Acunetix_Scan_scanner'))
     return suite
 
 
