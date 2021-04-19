@@ -2,6 +2,8 @@ __author__ = 'Jay Paz'
 import collections
 import logging
 from datetime import timedelta, datetime
+from functools import reduce
+
 from django import forms
 from django.apps import apps
 from auditlog.models import LogEntry
@@ -19,6 +21,7 @@ from dojo.models import Dojo_User, Finding_Group, Product_Type, Finding, Product
     Endpoint, Development_Environment, Finding_Template, Report, Note_Type, \
     Engagement_Survey, Question, TextQuestion, ChoiceQuestion, Endpoint_Status, Engagement, \
     ENGAGEMENT_STATUS_CHOICES, Test, App_Analysis, SEVERITY_CHOICES
+from dojo.tools.factory import get_disabled_scanners
 from dojo.utils import get_system_setting
 from django.contrib.contenttypes.models import ContentType
 import tagulous
@@ -46,6 +49,15 @@ def custom_filter(queryset, name, value):
     values = value.split(',')
     filter = ('%s__in' % (name))
     return queryset.filter(Q(**{filter: values}))
+
+
+def manage_disabled_scanners():
+    disabled = get_disabled_scanners()
+    # this dirty/ugly as hell solution is to filter out scanners that are disabled, needs some refactory on design level
+    q_list = []
+    q_list = map(lambda n: Q(name__iexact=n), disabled)
+    q_list = reduce(lambda a, b: a | b, q_list)
+    return q_list
 
 
 def now():
