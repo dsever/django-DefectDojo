@@ -1301,7 +1301,7 @@ class ToolTypesViewSet(mixins.ListModelMixin,
     serializer_class = serializers.ToolTypeSerializer
     queryset = Tool_Type.objects.all()
     filter_backends = (DjangoFilterBackend,)
-    filter_fields = ('id', 'name', 'description')
+    filter_fields = ('id', 'name', 'description', 'enabled')
     permission_classes = (IsAdminUser, DjangoModelPermissions)
 
 
