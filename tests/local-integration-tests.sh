@@ -120,6 +120,16 @@ else
     fail $test
 fi
 
+test="Check enable/disable tool types"
+echo "Running: $test"
+if python3 tests/disable_tool_type_test.py ; then
+    success $test
+else
+    fail $test
+fi
+
+
+
 # The below tests are commented out because they are still an unstable work in progress
 ## Once Ready they can be uncommented.
 
