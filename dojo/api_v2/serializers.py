@@ -1078,6 +1078,12 @@ class ImportScanSerializer(serializers.Serializer):
 
     test = serializers.IntegerField(read_only=True)  # not a modelserializer, so can't use related fields
 
+    def __init__(self,  *args, **kwargs):
+        super(ImportScanSerializer, self).__init__(self, *args, **kwargs)
+        self.scan_type = serializers.ChoiceField(
+            choices=ImportScanForm().SORTED_SCAN_TYPE_CHOICES)
+
+
     def save(self, push_to_jira=False):
         data = self.validated_data
         close_old_findings = data['close_old_findings']
