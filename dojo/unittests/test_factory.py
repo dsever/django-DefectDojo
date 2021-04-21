@@ -1,9 +1,11 @@
 from django.test import TestCase
-from dojo.tools.factory import import_parser_factory
+from dojo.tools.factory import import_parser_factory, get_disabled_scanners, get_choices
 from dojo.models import Test
 
 
 class TestFactory(TestCase):
+
+    fixtures = ["dojo_tool_type.json"]
 
     def test_acunetix_one_finding(self):
         testfile = open('dojo/unittests/scans/acunetix/one_finding.xml')
@@ -25,3 +27,11 @@ class TestFactory(TestCase):
         findings = parser.get_findings(testfile, Test())
         testfile.close()
         self.assertEqual(32, len(findings))
+
+    def test_disabled_scanners(self):
+        self.assertEqual(1, len(get_disabled_scanners()))
+
+    def test_not_acunetix_scan(self):
+        for choice in get_choices():
+            self.assertFalse("Acunetix Scan" in  choice[0])
+        assert True

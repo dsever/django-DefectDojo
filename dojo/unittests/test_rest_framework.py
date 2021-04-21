@@ -803,7 +803,7 @@ class ProductPermissionTest(DojoAPITestCase):
 
 
 class ImportScanTest(BaseClass.RESTEndpointTest):
-    fixtures = ['dojo_testdata.json']
+    fixtures = ['dojo_testdata.json', 'dojo_tool_type.json']
 
     def __init__(self, *args, **kwargs):
         self.endpoint_model = Test
