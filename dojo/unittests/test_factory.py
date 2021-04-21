@@ -31,7 +31,7 @@ class TestFactory(TestCase):
     def test_disabled_scanners(self):
         self.assertEqual(1, len(get_disabled_scanners()))
 
-    def test_not_acunetix_scan(self):
+    def test_not_burp_scan(self):
         for choice in get_choices():
-            self.assertFalse("Acunetix Scan" in  choice[0])
+            self.assertFalse("Burp Scan" in  choice[0])
         assert True
