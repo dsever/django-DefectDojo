@@ -1293,6 +1293,20 @@ class ToolProductSettingsViewSet(mixins.ListModelMixin,
     permission_classes = (IsAdminUser, DjangoModelPermissions)
 
 
+# Authorization: staff
+# class ToolTypesViewSet(mixins.ListModelMixin,
+#                        mixins.RetrieveModelMixin,
+#                        mixins.DestroyModelMixin,
+#                        mixins.CreateModelMixin,
+#                        mixins.UpdateModelMixin,
+#                        viewsets.GenericViewSet):
+#     serializer_class = serializers.TestTypeSerializerTypeSerializer
+#     queryset = Test_Type.objects.all()
+#     filter_backends = (DjangoFilterBackend,)
+#     filter_fields = ('id', 'name', 'description')
+#     permission_classes = (IsAdminUser, DjangoModelPermissions)
+
+
 # Authorization: authenticated users
 class RegulationsViewSet(mixins.ListModelMixin,
                          mixins.RetrieveModelMixin,

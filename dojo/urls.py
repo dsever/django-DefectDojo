@@ -82,8 +82,9 @@ v2_api.register(r'stub_findings', StubFindingsViewSet)
 v2_api.register(r'tests', TestsViewSet)
 v2_api.register(r'test_types', TestTypesViewSet)
 v2_api.register(r'test_imports', TestImportViewSet)
-v2_api.register(r'test_configurations', ToolConfigurationsViewSet)
+v2_api.register(r'tool_configurations', ToolConfigurationsViewSet)
 v2_api.register(r'tool_product_settings', ToolProductSettingsViewSet)
+# v2_api.register(r'tool_types', ToolTypesViewSet)
 v2_api.register(r'users', UsersViewSet)
 v2_api.register(r'import-scan', ImportScanView, basename='importscan')
 v2_api.register(r'reimport-scan', ReImportScanView, basename='reimportscan')
@@ -110,6 +111,7 @@ ur += test_urls
 ur += user_urls
 ur += jira_urls
 ur += github_urls
+# ur += tool_type_urls
 ur += tool_config_urls
 ur += tool_product_urls
 ur += cred_urls
