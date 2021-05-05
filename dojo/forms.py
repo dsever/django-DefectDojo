@@ -24,7 +24,7 @@ import tagulous
 from dojo.models import Finding, Finding_Group, Product_Type, Product, Note_Type, \
     Check_List, User, Engagement, Test, Test_Type, Notes, Risk_Acceptance, \
     Development_Environment, Dojo_User, Endpoint, Stub_Finding, Finding_Template, FindingImage, \
-    JIRA_Issue, JIRA_Project, JIRA_Instance, GITHUB_Issue, GITHUB_PKey, GITHUB_Conf, UserContactInfo, Tool_Type, \
+    JIRA_Issue, JIRA_Project, JIRA_Instance, GITHUB_Issue, GITHUB_PKey, GITHUB_Conf, UserContactInfo, \
     Tool_Configuration, Tool_Product_Settings, Cred_User, Cred_Mapping, System_Settings, Notifications, \
     Languages, Language_Type, App_Analysis, Objects_Product, Benchmark_Product, Benchmark_Requirement, \
     Benchmark_Product_Summary, Rule, Child_Rule, Engagement_Presets, DojoMeta, Sonarqube_Product, \
@@ -1872,11 +1872,11 @@ class Sonarqube_ProductForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(Sonarqube_ProductForm, self).__init__(*args, **kwargs)
-        Tool_Type.objects.get_or_create(name='SonarQube')
+        Test_Type.objects.get_or_create(name='SonarQube')
 
     sonarqube_tool_config = forms.ModelChoiceField(
         label='SonarQube Configuration',
-        queryset=Tool_Configuration.objects.filter(tool_type__name="SonarQube").order_by('name'),
+        queryset=Tool_Configuration.objects.filter(tool_type__name="SonarQube"),
         required=False
     )
 
@@ -1896,7 +1896,7 @@ class DeleteJIRAInstanceForm(forms.ModelForm):
 
 class ToolTypeForm(forms.ModelForm):
     class Meta:
-        model = Tool_Type
+        model = Test_Type
         exclude = ['product']
 
 
@@ -1925,7 +1925,7 @@ class App_AnalysisTypeForm(forms.ModelForm):
 
 
 class ToolConfigForm(forms.ModelForm):
-    tool_type = forms.ModelChoiceField(queryset=Tool_Type.objects.all(), label='Tool Type')
+    tool_type = forms.ModelChoiceField(queryset=Test_Type.objects.all(), label='Test Type')
     ssh = forms.CharField(widget=forms.Textarea(attrs={}), required=False, label='SSH Key')
 
     class Meta:

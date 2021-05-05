@@ -39,7 +39,9 @@
                            class="tablesorter-bootstrap table table-bordered table-condensed table-striped">
                         <thead>
                         <tr>
-                            <th>{% dojo_sort request 'Test Type' 'name' 'asc' %}</th>
+                            <th>{% dojo_sort request 'Name' 'name' 'asc' %}</th>
+                            <th>{% dojo_sort request 'Type' 'name' 'asc' %}</th>
+                            <th>{% dojo_sort request 'Status' 'name' 'asc' %}</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -49,6 +51,20 @@
                                     <td><a href="{% url 'edit_test_type' tt.id %}"> {{ tt.name }} </a></td>
                                 {% else %}
                                     <td> {{ tt.name }} </a> </td>
+                                {% endif %}
+                                {% if tt.static_tool and not tt.dynamic_tool %}
+                                    <td><b>static</b></td>
+                                {% elif tt.dynamic_tool and not tt.static_tool %}
+                                    <td><b>dynamic</b></td>
+                                {% elif tt.dynamic_tool and  tt.static_tool %}
+                                    <td><b>static,dynamic</b></td>
+                                {% else %}
+                                    <td><b>Undefined</b></td>
+                                {% endif %}
+                                {% if tt.enabled %}
+                                <td><span class="glyphicon glyphicon-ok" aria-hidden="true" title="Test Type enabled"></span> </td>
+                                {% else %}
+                                <td><span class="glyphicon glyphicon-remove" aria-hidden="true" title="Test Type Disabled"></span> </td>
                                 {% endif %}
                             </tr>
                         {% endfor %}

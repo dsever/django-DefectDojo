@@ -15,7 +15,7 @@ import base64
 from dojo.engagement.services import close_engagement, reopen_engagement
 from dojo.models import Product, Product_Type, Engagement, Test, Test_Import, Test_Type, Finding, \
     User, Stub_Finding, Finding_Template, Notes, \
-    JIRA_Issue, Tool_Product_Settings, Tool_Configuration, Tool_Type, \
+    JIRA_Issue, Tool_Product_Settings, Tool_Configuration, \
     Endpoint, JIRA_Project, JIRA_Instance, DojoMeta, Development_Environment, \
     Dojo_User, Note_Type, System_Settings, App_Analysis, Endpoint_Status, \
     Sonarqube_Issue, Sonarqube_Issue_Transition, Sonarqube_Product, Regulation, \
@@ -1294,17 +1294,17 @@ class ToolProductSettingsViewSet(mixins.ListModelMixin,
 
 
 # Authorization: staff
-class ToolTypesViewSet(mixins.ListModelMixin,
-                       mixins.RetrieveModelMixin,
-                       mixins.DestroyModelMixin,
-                       mixins.CreateModelMixin,
-                       mixins.UpdateModelMixin,
-                       viewsets.GenericViewSet):
-    serializer_class = serializers.ToolTypeSerializer
-    queryset = Tool_Type.objects.all()
-    filter_backends = (DjangoFilterBackend,)
-    filter_fields = ('id', 'name', 'description')
-    permission_classes = (IsAdminUser, DjangoModelPermissions)
+# class ToolTypesViewSet(mixins.ListModelMixin,
+#                        mixins.RetrieveModelMixin,
+#                        mixins.DestroyModelMixin,
+#                        mixins.CreateModelMixin,
+#                        mixins.UpdateModelMixin,
+#                        viewsets.GenericViewSet):
+#     serializer_class = serializers.TestTypeSerializerTypeSerializer
+#     queryset = Test_Type.objects.all()
+#     filter_backends = (DjangoFilterBackend,)
+#     filter_fields = ('id', 'name', 'description')
+#     permission_classes = (IsAdminUser, DjangoModelPermissions)
 
 
 # Authorization: authenticated users

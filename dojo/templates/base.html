@@ -211,7 +211,6 @@
                                         <li><a href="{% url 'engagements_all' %}">All Engagements</a></li>
                                     {% endif %}
                                     {% if request.user.is_staff %}
-                                        <li><a href="{% url 'test_type' %}">Test Types</a></li>
                                         <li><a href="{% url 'dev_env' %}">Environments</a></li>
                                     {% endif %}
                                 </ul>
@@ -343,8 +342,8 @@
                                         {% if system_settings.enable_github %}
                                         <li><a href="{% url 'github' %}">GitHub </a></li>
                                         {% endif %}
-                                        <li><a href="{% url 'tool_config' %}">Tool Configuration </a></li>
-                                        <li><a href="{% url 'tool_type' %}">Tool Type </a></li>
+                                        <li><a href="{% url 'test_type' %}">Test Types</a></li>
+                                        <li><a href="{% url 'tool_config' %}">Test Configuration </a></li>
                                         <li><a href="{% url 'rules' %}">Rules Framework </a></li>
                                         <li><a href="{% url 'regulations' %}">Regulations </a></li>
                                         <li><a href="{% url 'system_settings' %}">System Settings </a></li>
