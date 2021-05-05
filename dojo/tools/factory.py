@@ -27,6 +27,7 @@ def import_parser_factory(file, test, active, verified, scan_type=None):
     This function exists only for backward compatibility
     """
     if scan_type in PARSERS:
+        print(PARSERS)
         # create dynamicaly in DB
         test_type, created = Test_Type.objects.get_or_create(name=scan_type)
         if created:

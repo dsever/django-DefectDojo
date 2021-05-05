@@ -10,6 +10,7 @@ from dojo.filters import TestTypeFilter
 from dojo.forms import Test_TypeForm
 from dojo.models import Test_Type
 from dojo.utils import get_page_items, add_breadcrumb
+from dojo.tools import factory
 
 logger = logging.getLogger(__name__)
 
@@ -35,6 +36,20 @@ def test_type(request):
         'test_types': test_types,
         'name_words': name_words})
 
+@user_passes_test(lambda u: u.is_staff)
+def sync_test_types(request):
+    for parser in factory.PARSERS:
+        try:
+                logger.info("Sync {0}".format(factory.PARSERS[parser].get_scan_types()[0]))
+
+                scanner, created = Test_Type.objects.get_or_create(name=parser)
+                scanner.description = factory.PARSERS[parser].get_description_for_scan_types("mock")
+                scanner.save()
+        except:
+            logger.error("Sync Error for scanner {0}".format(factory.PARSERS[parser].get_scan_types()[0]))
+
+
+    return HttpResponseRedirect(reverse('test_type'))
 
 @user_passes_test(lambda u: u.is_staff)
 def add_test_type(request):
@@ -48,6 +63,7 @@ def add_test_type(request):
                                  'Test type added successfully.',
                                  extra_tags='alert-success')
             return HttpResponseRedirect(reverse('test_type'))
+
     add_breadcrumb(title="Add Test Type", top_level=False, request=request)
     return render(request, 'dojo/new_test_type.html', {
         'name': 'Add Test Type',
