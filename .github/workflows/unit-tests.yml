@@ -6,9 +6,9 @@ on:
   workflow_dispatch:
   pull_request:
   push:
-    branches:
-      - master
-      - dev
+#    branches:
+#      - master
+#      - dev
 
 env:
   DD_DOCKER_REPO: defectdojo

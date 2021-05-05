@@ -7,6 +7,8 @@ urlpatterns = [
     url(r'^test_type$', views.test_type, name='test_type'),
     url(r'^test_type/add$', views.add_test_type,
         name='add_test_type'),
+    url(r'^test_type/sync_test_types$', views.sync_test_types,
+        name='sync_test_types'),
     url(r'^test_type/(?P<ptid>\d+)/edit$',
         views.edit_test_type, name='edit_test_type'),
 ]
