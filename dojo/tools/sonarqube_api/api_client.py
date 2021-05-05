@@ -1,6 +1,6 @@
 import requests
 
-from dojo.models import Tool_Configuration, Tool_Type
+from dojo.models import Tool_Configuration, Test_Type
 from dojo.utils import prepare_for_view
 
 
@@ -10,7 +10,7 @@ class SonarQubeAPI:
 
         self.rules_cache = dict()
 
-        tool_type, _ = Tool_Type.objects.get_or_create(name='SonarQube')
+        tool_type, _ = Test_Type.objects.get_or_create(name='SonarQube')
 
         if not tool_config:
             try:

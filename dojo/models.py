@@ -506,8 +506,10 @@ class Report_Type(models.Model):
 
 class Test_Type(models.Model):
     name = models.CharField(max_length=200, unique=True)
+    description = models.CharField(max_length=2000, null=True)
     static_tool = models.BooleanField(default=False)
     dynamic_tool = models.BooleanField(default=False)
+    enabled = models.BooleanField(default=True)
 
     def __str__(self):
         return self.name
@@ -794,22 +796,22 @@ class Product_Type_Member(models.Model):
     role = models.IntegerField(default=0)
 
 
-class Tool_Type(models.Model):
-    name = models.CharField(max_length=200)
-    description = models.CharField(max_length=2000, null=True)
-
-    class Meta:
-        ordering = ['name']
-
-    def __str__(self):
-        return self.name
+# class Tool_Type(models.Model):
+#     name = models.CharField(max_length=200)
+#     description = models.CharField(max_length=2000, null=True)
+#
+#     class Meta:
+#         ordering = ['name']
+#
+#     def __str__(self):
+#         return self.name
 
 
 class Tool_Configuration(models.Model):
     name = models.CharField(max_length=200, null=False)
     description = models.CharField(max_length=2000, null=True, blank=True)
     url = models.CharField(max_length=2000, null=True)
-    tool_type = models.ForeignKey(Tool_Type, related_name='tool_type', on_delete=models.CASCADE)
+    tool_type = models.ForeignKey(Test_Type, related_name='test_type', on_delete=models.CASCADE)
     authentication_type = models.CharField(max_length=15,
                                            choices=(
                                                ('API', 'API Key'),
@@ -3521,7 +3523,7 @@ admin.site.register(GITHUB_Conf)
 admin.site.register(GITHUB_PKey)
 admin.site.register(Tool_Configuration, Tool_Configuration_Admin)
 admin.site.register(Tool_Product_Settings)
-admin.site.register(Tool_Type)
+#admin.site.register(Tool_Type)
 admin.site.register(Cred_User)
 admin.site.register(Cred_Mapping)
 admin.site.register(System_Settings, System_SettingsAdmin)

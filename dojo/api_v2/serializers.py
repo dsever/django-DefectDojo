@@ -2,7 +2,7 @@ from drf_yasg.utils import swagger_serializer_method
 from dojo.models import Finding_Group, Product, Engagement, Test, Finding, \
     User, Stub_Finding, Risk_Acceptance, \
     Finding_Template, Test_Type, Development_Environment, NoteHistory, \
-    JIRA_Issue, Tool_Product_Settings, Tool_Configuration, Tool_Type, \
+    JIRA_Issue, Tool_Product_Settings, Tool_Configuration, \
     Product_Type, JIRA_Instance, Endpoint, JIRA_Project, \
     Notes, DojoMeta, FindingImage, Note_Type, App_Analysis, Endpoint_Status, \
     Sonarqube_Issue, Sonarqube_Issue_Transition, Sonarqube_Product, Regulation, \
@@ -488,10 +488,10 @@ class AppAnalysisSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class ToolTypeSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Tool_Type
-        fields = '__all__'
+# class ToolTypeSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Tool_Type
+#         fields = '__all__'
 
 
 class RegulationSerializer(serializers.ModelSerializer):
