@@ -1,16 +1,16 @@
 from dojo.models import Product, Engagement, Test, Finding, \
-    JIRA_Issue, Tool_Product_Settings, Tool_Configuration, Tool_Type, \
+    JIRA_Issue, Tool_Product_Settings, Tool_Configuration, \
     User, Stub_Finding, Endpoint, JIRA_Project, JIRA_Instance, \
     Finding_Template, Note_Type, App_Analysis, Endpoint_Status, \
     Sonarqube_Issue, Sonarqube_Issue_Transition, Sonarqube_Product, Notes, \
-    BurpRawRequestResponse, DojoMeta, FileUpload
+    BurpRawRequestResponse, DojoMeta, FileUpload, Test_Type
 from dojo.api_v2.views import EndPointViewSet, EngagementViewSet, \
     FindingTemplatesViewSet, FindingViewSet, JiraInstanceViewSet, \
     JiraIssuesViewSet, JiraProjectViewSet, ProductViewSet, \
     StubFindingsViewSet, TestsViewSet, \
-    ToolConfigurationsViewSet, ToolProductSettingsViewSet, ToolTypesViewSet, \
+    ToolConfigurationsViewSet, ToolProductSettingsViewSet, \
     UsersViewSet, ImportScanView, NoteTypeViewSet, AppAnalysisViewSet, \
-    EndpointStatusViewSet, SonarqubeIssueViewSet, NotesViewSet
+    EndpointStatusViewSet, SonarqubeIssueViewSet, NotesViewSet, TestTypesViewSet
 from json import dumps
 from django.urls import reverse
 from rest_framework import status
@@ -716,13 +716,14 @@ class ToolProductSettingsTest(BaseClass.RESTEndpointTest):
         BaseClass.RESTEndpointTest.__init__(self, *args, **kwargs)
 
 
-class ToolTypesTest(BaseClass.RESTEndpointTest):
+
+class TestTypeTool(BaseClass.RESTEndpointTest):
     fixtures = ['dojo_testdata.json']
 
     def __init__(self, *args, **kwargs):
-        self.endpoint_model = Tool_Type
-        self.viewname = 'tool_type'
-        self.viewset = ToolTypesViewSet
+        self.endpoint_model = Test_Type
+        self.viewname = 'test_type'
+        self.viewset = TestTypesViewSet
         self.payload = {
             "name": "Tool Type",
             "description": "test tool type"

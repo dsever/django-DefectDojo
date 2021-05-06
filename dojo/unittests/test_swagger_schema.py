@@ -19,14 +19,14 @@ from dojo.api_v2.views import \
     SonarqubeIssueViewSet, SonarqubeProductViewSet, \
     SonarqubeIssueTransitionViewSet, StubFindingsViewSet, SystemSettingsViewSet, \
     TestTypesViewSet, TestsViewSet, ToolConfigurationsViewSet, ToolProductSettingsViewSet, \
-    ToolTypesViewSet, UsersViewSet, JiraIssuesViewSet, JiraProjectViewSet, AppAnalysisViewSet
+    UsersViewSet, JiraIssuesViewSet, JiraProjectViewSet, AppAnalysisViewSet
 
 from dojo.models import \
     Development_Environment, Endpoint_Status, Endpoint, Engagement, Finding_Template, \
     Finding, JIRA_Instance, JIRA_Issue, DojoMeta, Note_Type, Notes, Product_Type, Product, Regulation, \
     Sonarqube_Issue, Sonarqube_Product, Sonarqube_Issue_Transition, \
     Stub_Finding, System_Settings, Test_Type, Test, Tool_Configuration, Tool_Product_Settings, \
-    Tool_Type, Dojo_User, JIRA_Project, App_Analysis
+    Dojo_User, JIRA_Project, App_Analysis
 
 from dojo.api_v2.serializers import \
     DevelopmentEnvironmentSerializer, EndpointStatusSerializer, EndpointSerializer, \
@@ -35,7 +35,7 @@ from dojo.api_v2.serializers import \
     ProductSerializer, RegulationSerializer, \
     SonarqubeIssueSerializer, SonarqubeProductSerializer, SonarqubeIssueTransitionSerializer, \
     StubFindingSerializer, SystemSettingsSerializer, TestTypeSerializer, TestSerializer, ToolConfigurationSerializer, \
-    ToolProductSettingsSerializer, ToolTypeSerializer, UserSerializer, NoteSerializer, ProductTypeSerializer, \
+    ToolProductSettingsSerializer, UserSerializer, NoteSerializer, ProductTypeSerializer, \
     AppAnalysisSerializer
 
 SWAGGER_SCHEMA_GENERATOR = OpenAPISchemaGenerator(Info("defectdojo", "v2"))
@@ -688,15 +688,6 @@ class ToolProductSettingTest(BaseClass.SchemaTest):
         self.viewset = ToolProductSettingsViewSet
         self.model = Tool_Product_Settings
         self.serializer = ToolProductSettingsSerializer
-
-
-class ToolTypeTest(BaseClass.SchemaTest):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.viewname = "tool_types"
-        self.viewset = ToolTypesViewSet
-        self.model = Tool_Type
-        self.serializer = ToolTypeSerializer
 
 
 class UserTest(BaseClass.SchemaTest):

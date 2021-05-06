@@ -3,13 +3,13 @@ from unittest import mock
 
 from dojo.tools.sonarqube_api.importer import SonarQubeApiImporter
 from django.test import TestCase
-from dojo.models import Test, Tool_Configuration, Tool_Type, Engagement, Product
+from dojo.models import Test, Tool_Configuration, Test_Type, Engagement, Product
 
 
 class TestSonarqubeImporter(TestCase):
 
     def setUp(self):
-        tool_type = Tool_Type.objects.create(name='SonarQube')
+        tool_type = Test_Type.objects.create(name='SonarQube')
         Tool_Configuration.objects.create(name='SonarQube', tool_type=tool_type, authentication_type="API")
 
         product = Product(name='product')

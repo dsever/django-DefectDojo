@@ -1743,24 +1743,24 @@
     }
   },
   {
-    "pk": 1,
-    "model": "dojo.tool_type",
+    "pk": 4,
+    "model": "dojo.test_type",
     "fields": {
       "name": "Tool Type 1",
       "description": "test type"
     }
   },
   {
-    "pk": 2,
-    "model": "dojo.tool_type",
+    "pk": 5,
+    "model": "dojo.test_type",
     "fields": {
       "name": "Tool Type 2",
       "description": "test type"
     }
   },
   {
-    "pk": 3,
-    "model": "dojo.tool_type",
+    "pk": 6,
+    "model": "dojo.test_type",
     "fields": {
       "name": "Tool Type 3",
       "description": "test type"
