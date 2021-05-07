@@ -675,7 +675,7 @@ class TestsTest(BaseClass.SchemaTest):
 class ToolConfigurationTest(BaseClass.SchemaTest):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.viewname = "tool_configurations"
+        self.viewname = "test_configurations"
         self.viewset = ToolConfigurationsViewSet
         self.model = Tool_Configuration
         self.serializer = ToolConfigurationSerializer
