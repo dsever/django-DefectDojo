@@ -546,6 +546,9 @@ class EndpointStatusSerializer(serializers.ModelSerializer):
 
 class EndpointSerializer(TaggitSerializer, serializers.ModelSerializer):
     tags = TagListSerializerField(required=False)
+    findings_count = serializers.IntegerField(required=False)
+
+
 
     class Meta:
         model = Endpoint

@@ -1227,7 +1227,7 @@
     }
 },
 {
-    "model": "dojo.tool_type",
+    "model": "dojo.test_type",
     "pk": 1,
     "fields": {
         "name": "DAST",
@@ -1235,7 +1235,7 @@
     }
 },
 {
-    "model": "dojo.tool_type",
+    "model": "dojo.test_type",
     "pk": 2,
     "fields": {
         "name": "SAST",
@@ -1243,7 +1243,7 @@
     }
 },
 {
-    "model": "dojo.tool_type",
+    "model": "dojo.test_type",
     "pk": 3,
     "fields": {
         "name": "IAST",
@@ -1251,7 +1251,7 @@
     }
 },
 {
-    "model": "dojo.tool_type",
+    "model": "dojo.test_type",
     "pk": 4,
     "fields": {
         "name": "Source Code",
@@ -1259,7 +1259,7 @@
     }
 },
 {
-    "model": "dojo.tool_type",
+    "model": "dojo.test_type",
     "pk": 5,
     "fields": {
         "name": "Build Sever",
