@@ -614,7 +614,12 @@
     <footer class="footer">
         <div class="container">
             <div class="row">
-                <div class="col-md-12 text-center text-">
+                {% if LOGO %}
+                <div class="col-md-4">
+                <img src={{ LOGO }} width="150"/>
+                </div>
+                {%  endif %}
+                <div class="col-md-8 text-left text-">
                     <p>
                         <a href="{% url 'home' %}"><img class="logo" src="{% static "dojo/img/chop.png" %}"
                                                         alt="DefectDojo Chop" height="45"/></a><br/>

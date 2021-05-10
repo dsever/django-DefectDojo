@@ -47,6 +47,7 @@ env = environ.Env(
     DD_MEDIA_ROOT=(str, root('media')),
     DD_STATIC_URL=(str, '/static/'),
     DD_STATIC_ROOT=(str, root('static')),
+    DD_LOGO=(str, ''),
     DD_CELERY_BROKER_URL=(str, ''),
     DD_CELERY_BROKER_SCHEME=(str, 'sqla+sqlite'),
     DD_CELERY_BROKER_USER=(str, ''),
@@ -611,6 +612,7 @@ TEMPLATES = [
                 'dojo.context_processors.globalize_oauth_vars',
                 'dojo.context_processors.bind_system_settings',
                 'dojo.context_processors.bind_alert_count',
+                'dojo.context_processors.custom_base_logo',
             ],
         },
     },
@@ -1057,3 +1059,6 @@ JIRA_TEMPLATE_ROOT = env('DD_JIRA_TEMPLATE_ROOT')
 TEMPLATE_DIR_PREFIX = env('DD_TEMPLATE_DIR_PREFIX')
 
 DUPLICATE_CLUSTER_CASCADE_DELETE = env('DD_DUPLICATE_CLUSTER_CASCADE_DELETE')
+
+LOGO = env('DD_LOGO')
+

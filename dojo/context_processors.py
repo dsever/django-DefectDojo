@@ -14,6 +14,11 @@ def globalize_oauth_vars(request):
             'SAML2_ENABLED': settings.SAML2_ENABLED,
             'SAML2_LOGOUT_URL': settings.SAML2_LOGOUT_URL}
 
+def custom_base_logo(request):
+    if settings.LOGO:
+        return {'LOGO': settings.LOGO }
+
+    return {}
 
 def bind_system_settings(request):
     from dojo.models import System_Settings
