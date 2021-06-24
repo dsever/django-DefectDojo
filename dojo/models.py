@@ -553,6 +553,7 @@ class Report_Type(models.Model):
 
 class Test_Type(models.Model):
     name = models.CharField(max_length=200, unique=True)
+    description = models.CharField(max_length=255, blank=True, null=True)
     static_tool = models.BooleanField(default=False)
     dynamic_tool = models.BooleanField(default=False)
 
