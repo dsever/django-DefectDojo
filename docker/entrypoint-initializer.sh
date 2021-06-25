@@ -97,6 +97,8 @@ EOD
        development_environment benchmark_type benchmark_category benchmark_requirement \
        language_type objects_review regulation initial_surveys test_type
 
+   echo "Loading tools from factory"
+   python3 manage.py dump_test_types -r
 
   echo "UPDATE dojo_system_settings SET jira_webhook_secret='$DD_JIRA_WEBHOOK_SECRET'" | python manage.py dbshell
 
