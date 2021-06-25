@@ -60,6 +60,7 @@ then
     exit
 fi
 
+
 if [ -z "${DD_ADMIN_PASSWORD}" ]
 then
   export DD_ADMIN_PASSWORD="$(cat /dev/urandom | LC_ALL=C tr -dc a-zA-Z0-9 | \
@@ -92,9 +93,10 @@ EOD
   python3 manage.py import_surveys
   # load surveys all at once as that's much faster
    echo "Importing fixtures all at once"
-   python3 manage.py loaddata system_settings initial_banner_conf product_type test_type \
+   python3 manage.py loaddata system_settings initial_banner_conf product_type \
        development_environment benchmark_type benchmark_category benchmark_requirement \
-       language_type objects_review regulation initial_surveys
+       language_type objects_review regulation initial_surveys test_type
+
 
   echo "UPDATE dojo_system_settings SET jira_webhook_secret='$DD_JIRA_WEBHOOK_SECRET'" | python manage.py dbshell
 
@@ -108,3 +110,4 @@ EOD
   echo "Installing watson search index"
   python3 manage.py installwatson
 fi
+
