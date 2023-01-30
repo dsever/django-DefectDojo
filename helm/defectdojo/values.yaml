@@ -1,6 +1,6 @@
 ---
-# Global settings
-# create defectdojo specific secret
+## @section Global settings
+## @param createSecret create defectdojo specific secret
 createSecret: false
 # create rabbitmq secret in defectdojo chart, outside of rabbitmq chart
 createRabbitMqSecret: false
