@@ -301,7 +301,7 @@ django:
       - ReadWriteMany  # check KUBERNETES.md doc first for option to choose
       storageClassName:
 
-## @skip initializer 
+## @skip initializer
 initializer:
   run: true
   jobAnnotations: {
@@ -454,7 +454,7 @@ gke:
   workloadIdentityEmail: ""
 
 ## @section Message Brokers
-## @skip rabbit
+## @skip rabbitmq
 rabbitmq:
   enabled: true
   replicaCount: 1
