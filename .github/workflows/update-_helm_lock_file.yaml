@@ -47,5 +47,5 @@ jobs:
           if git status -s | grep helm; then
             git config user.name "DefectDojo"
             git config user.email "defectdojo-project@owasp.org"
-            git add . && git commit -am "Update README.md with readme-generator-for-helm" --signoff && git push
+            git add . && git commit -am "Update helm lock file" --signoff && git push
           fi
