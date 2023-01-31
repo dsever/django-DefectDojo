@@ -1,3 +1,17 @@
+# DefectDojo on Kubernetes
+
+DefectDojo Kubernetes utilizes [Helm](https://helm.sh/), a
+package manager for Kubernetes. Helm Charts help you define, install, and
+upgrade even the most complex Kubernetes application.
+
+For development purposes,
+[minikube](https://kubernetes.io/docs/tasks/tools/install-minikube/)
+and [Helm](https://helm.sh/) can be installed locally by following
+this [guide](https://helm.sh/docs/using_helm/#installing-helm).
+
+## Supported Kubernetes Versions
+The tests cover the deployment on the lastest [kubernetes version](https://kubernetes.io/releases/) and the oldest supported [version from AWS](https://docs.aws.amazon.com/eks/latest/userguide/kubernetes-versions.html#available-versions). The assumption is that version in between do not have significant differences. Current tested versions can looks up in the [github k8s workflow](https://github.com/DefectDojo/django-DefectDojo/blob/master/.github/workflows/k8s-testing.yml).
+
 ## Parameters
 
 ### Global settings
