@@ -92,7 +92,7 @@ tests:
         cpu: 500m
         memory: 512Mi
 
-## @Section Admin setup
+## @section Admin setup
 ## @param admin.user Admin username
 ## @param admin.password Admin password (default generated)
 ## @param admin.firstName Admin first name
