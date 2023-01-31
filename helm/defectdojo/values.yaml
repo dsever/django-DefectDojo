@@ -425,7 +425,7 @@ postgresqlha:
 # Google CloudSQL support in GKE via gce-proxy
 ## @skip cloudsql
 cloudsql:
-  # To use CloudSQL in GKE set 'enable: true'
+  ## @param enabled To use CloudSQL in GKE set 'enable: true'
   enabled: false
   # By default, the proxy has verbose logging. Set this to false to make it less verbose
   verbose: true
