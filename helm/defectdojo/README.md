@@ -56,6 +56,16 @@ The tests cover the deployment on the lastest [kubernetes version](https://kuber
 | `admin.metricsHttpAuthPassword` | metricsHttpAuthPassword            | `""`                     |
 
 
+### Monitoring
+
+| Name                                    | Description         | Value                                    |
+| --------------------------------------- | ------------------- | ---------------------------------------- |
+| `monitoring.enabled`                    | Enabled monitoring  | `false`                                  |
+| `monitoring.prometheus.enabled`         | Adds sidecar        | `false`                                  |
+| `monitoring.prometheus.image`           | Sidecar image       | `nginx/nginx-prometheus-exporter:0.11.0` |
+| `monitoring.prometheus.imagePullPolicy` | Sidecar pull policy | `IfNotPresent`                           |
+
+
 ### Database
 
 
