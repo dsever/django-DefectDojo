@@ -40,8 +40,8 @@ jobs:
           ls
           ls charts
           helm repo add bitnami https://charts.bitnami.com/bitnami
-          helm dependency list ./helm/defectdojo
-          helm dependency update ./helm/defectdojo
+          helm dependency list ./charts/helm/defectdojo
+          helm dependency update ./charts/helm/defectdojo
       - name: Push changes
         run: |
           # Push all the changes
