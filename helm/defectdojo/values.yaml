@@ -94,13 +94,13 @@ tests:
 ## @skip admin
 admin:
   user: admin
-  password:
+  password: ""
   firstName: Administrator
   lastName: User
   mail: admin@defectdojo.local
-  secretKey:
-  credentialAes256Key:
-  metricsHttpAuthPassword:
+  secretKey: ""
+  credentialAes256Key: ""
+  metricsHttpAuthPassword: ""
 
 ## @skip monitoring
 monitoring:
@@ -453,7 +453,7 @@ gke:
   # Workload Identity allows the K8s service account to assume the IAM access of a GCP service account to interact with other GCP services
   workloadIdentityEmail: ""
 
-## @section Message Brokers
+## @section Message Broker
 ## @skip rabbitmq
 rabbitmq:
   enabled: true
