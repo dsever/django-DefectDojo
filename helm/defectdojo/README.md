@@ -1,7 +1,1 @@
-# Global
-
-# Image
-
-# Database
-
-# Message Broker
+# Parameters
