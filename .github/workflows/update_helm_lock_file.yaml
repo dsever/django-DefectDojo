@@ -37,6 +37,8 @@ jobs:
           #  echo "Updating README.md for ${chart}"
           #    readme-generator --values "charts/${chart}/values.yaml" --readme "charts/${chart}/README.md" --schema "/tmp/schema.json"
           # done
+          ls
+          ls charts
           helm repo add bitnami https://charts.bitnami.com/bitnami
           helm dependency list ./helm/defectdojo
           helm dependency update ./helm/defectdojo
