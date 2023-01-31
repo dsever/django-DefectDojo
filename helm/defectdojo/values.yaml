@@ -522,14 +522,14 @@ redis:
 #   DD_SOCIAL_AUTH_AUTH0_OAUTH2_ENABLED: 'true'
 #   DD_SOCIAL_AUTH_AUTH0_KEY: 'dev'
 #   DD_SOCIAL_AUTH_AUTH0_DOMAIN: 'xxxxx'
-## @param extraConfigs Add extra variables not predefined by helm config it is possible to define in extraConfigs block
+## @param extraConfigs [object] Add extra variables not predefined by helm config it is possible to define in extraConfigs block
 extraConfigs: {}
 
 # Extra secrets can be created inside of extraSecrets block:
 # NOTE  This is just an example, do not store sensitive data in plain text form, better inject it during the deployment/upgrade by --set extraSecrets.secret=someSecret
 # extraSecrets:
 #   DD_SOCIAL_AUTH_AUTH0_SECRET: 'xxx'
-## @param extraSecrets Extra secrets can be created inside of extraSecrets block. NOTE do not store sensitive data in plain text form, better inject it during the deployment/upgrade by --set extraSecrets.secret=someSecret
+## @param extraSecrets [object] Extra secrets can be created inside of extraSecrets block. NOTE do not store sensitive data in plain text form, better inject it during the deployment/upgrade by --set extraSecrets.secret=someSecret
 extraSecrets: {}
 
 
@@ -541,4 +541,5 @@ extraSecrets: {}
 #     configMapKeyRef:
 #       name: my-other-postgres-configmap
 #       key: cluster_endpoint
+## @param extraEnv [array] Add (or override) extra variables which need to be pulled from another configMap
 extraEnv: []
