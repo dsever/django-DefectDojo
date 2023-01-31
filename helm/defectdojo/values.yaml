@@ -2,11 +2,11 @@
 ## @section Global settings
 ## @param createSecret create defectdojo specific secret
 createSecret: false
-# create rabbitmq secret in defectdojo chart, outside of rabbitmq chart
+## @param createRabbitMqSecret create rabbitmq secret in defectdojo chart, outside of rabbitmq chart
 createRabbitMqSecret: false
-# create redis secret in defectdojo chart, outside of redis chart
+## @param createRedisSecret create redis secret in defectdojo chart, outside of redis chart
 createRedisSecret: false
-# create mysql secret in defectdojo chart, outside of mysql chart
+# @param createMysqlSecret create mysql secret in defectdojo chart, outside of mysql chart
 createMysqlSecret: false
 # create postgresql secret in defectdojo chart, outside of postgresql chart
 createPostgresqlSecret: false
