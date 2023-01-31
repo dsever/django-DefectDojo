@@ -73,9 +73,16 @@ The tests cover the deployment on the lastest [kubernetes version](https://kuber
 
 ### Message Broker
 
-| Name           | Description                                                                                      | Value |
-| -------------- | ------------------------------------------------------------------------------------------------ | ----- |
-| `extraConfigs` | Add extra variables not predefined by helm config it is possible to define in extraConfigs block | `{}`  |
+
+
+
+### Extra configs
+
+| Name           | Description                                                                                                                                                                                            | Value |
+| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----- |
+| `extraConfigs` | Add extra variables not predefined by helm config it is possible to define in extraConfigs block                                                                                                       | `{}`  |
+| `extraSecrets` | Extra secrets can be created inside of extraSecrets block. NOTE do not store sensitive data in plain text form, better inject it during the deployment/upgrade by --set extraSecrets.secret=someSecret | `{}`  |
+| `extraEnv`     | Add (or override) extra variables which need to be pulled from another configMap                                                                                                                       | `[]`  |
 
 
 ## Upgrading
