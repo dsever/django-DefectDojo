@@ -515,7 +515,7 @@ redis:
   # the line below:
   # redisServer: myrediscluster
 
-
+## @section Extra configs
 # To add extra variables not predefined by helm config it is possible to define in extraConfigs block, e.g. below:
 # NOTE  Do not store any kind of sensitive information inside of it
 # extraConfigs:
@@ -541,3 +541,4 @@ extraSecrets: {}
 #     configMapKeyRef:
 #       name: my-other-postgres-configmap
 #       key: cluster_endpoint
+extraEnv: []
