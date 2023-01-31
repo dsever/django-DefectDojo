@@ -92,7 +92,15 @@ tests:
         cpu: 500m
         memory: 512Mi
 
-## @skip admin
+## @Section Admin setup
+## @param admin.user Admin username
+## @param admin.password Admin password (default generated)
+## @param admin.firstName Admin first name
+## @param admin.lastName Admin last name
+## @param admin.mail Admin email
+## @param admin.secretKey Secret key
+## @param admin.credentialAes256Key credentialAes256Key
+## @param admin.metricsHttpAuthPassword metricsHttpAuthPassword
 admin:
   user: admin
   password: ""
