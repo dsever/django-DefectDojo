@@ -522,13 +522,16 @@ redis:
 #   DD_SOCIAL_AUTH_AUTH0_OAUTH2_ENABLED: 'true'
 #   DD_SOCIAL_AUTH_AUTH0_KEY: 'dev'
 #   DD_SOCIAL_AUTH_AUTH0_DOMAIN: 'xxxxx'
-
-# Extra secrets can be created inside of extraSecrets block:
-# NOTE  This is just an exmaple, do not store sensitive data in plain text form, better inject it during the deployment/upgrade by --set extraSecrets.secret=someSecret
-# extraSecrets:
-#   DD_SOCIAL_AUTH_AUTH0_SECRET: 'xxx'
 ## @param extraConfigs Add extra variables not predefined by helm config it is possible to define in extraConfigs block
 extraConfigs: {}
+
+# Extra secrets can be created inside of extraSecrets block:
+# NOTE  This is just an example, do not store sensitive data in plain text form, better inject it during the deployment/upgrade by --set extraSecrets.secret=someSecret
+# extraSecrets:
+#   DD_SOCIAL_AUTH_AUTH0_SECRET: 'xxx'
+## @param extraSecrets Extra secrets can be created inside of extraSecrets block. NOTE do not store sensitive data in plain text form, better inject it during the deployment/upgrade by --set extraSecrets.secret=someSecret
+extraSecrets: {}
+
 
 # To add (or override) extra variables which need to be pulled from another configMap, you can
 # use extraEnv. For example:
