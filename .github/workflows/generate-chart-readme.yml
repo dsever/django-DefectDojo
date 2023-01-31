@@ -39,7 +39,7 @@ jobs:
         run: |
           # Push all the changes
           cd charts
-          if git status -s | grep bitnami; then
+          if git status -s | grep helm; then
             git config user.name "DefectDojo"
             git config user.email "defectdojo-project@owasp.org"
             git add . && git commit -am "Update README.md with readme-generator-for-helm" --signoff && git push
