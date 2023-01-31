@@ -32,14 +32,22 @@ The tests cover the deployment on the lastest [kubernetes version](https://kuber
 
 ### Image
 
-| Name               | Description                                                                                            | Value        |
-| ------------------ | ------------------------------------------------------------------------------------------------------ | ------------ |
-| `imagePullPolicy`  | Kubernetes image pull policy, https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy | `Always`     |
-| `repositoryPrefix` | Where to pull the defectDojo images from. Defaults to "defectdojo/*" repositories on hub.docker.com    | `defectdojo` |
-| `imagePullSecrets` | Image pull secret                                                                                      | `[]`         |
-| `tag`              | Image tag                                                                                              | `latest`     |
-| `podLabels`        | Additional labels to add to the pods                                                                   | `{}`         |
-| `securityContext`  | Pod Security Context                                                                                   | `undefined`  |
+| Name                            | Description                                                                                            | Value                    |
+| ------------------------------- | ------------------------------------------------------------------------------------------------------ | ------------------------ |
+| `imagePullPolicy`               | Kubernetes image pull policy, https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy | `Always`                 |
+| `repositoryPrefix`              | Where to pull the defectDojo images from. Defaults to "defectdojo/*" repositories on hub.docker.com    | `defectdojo`             |
+| `imagePullSecrets`              | Image pull secret                                                                                      | `[]`                     |
+| `tag`                           | Image tag                                                                                              | `latest`                 |
+| `podLabels`                     | Additional labels to add to the pods                                                                   | `{}`                     |
+| `securityContext`               | Pod Security Context                                                                                   | `undefined`              |
+| `admin.user`                    | Admin username                                                                                         | `admin`                  |
+| `admin.password`                | Admin password (default generated)                                                                     | `""`                     |
+| `admin.firstName`               | Admin first name                                                                                       | `Administrator`          |
+| `admin.lastName`                | Admin last name                                                                                        | `User`                   |
+| `admin.mail`                    | Admin email                                                                                            | `admin@defectdojo.local` |
+| `admin.secretKey`               | Secret key                                                                                             | `""`                     |
+| `admin.credentialAes256Key`     | credentialAes256Key                                                                                    | `""`                     |
+| `admin.metricsHttpAuthPassword` | metricsHttpAuthPassword                                                                                | `""`                     |
 
 
 ### Database
