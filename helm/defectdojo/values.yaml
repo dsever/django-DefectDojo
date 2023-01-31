@@ -111,7 +111,11 @@ admin:
   credentialAes256Key: ""
   metricsHttpAuthPassword: ""
 
-## @skip monitoring
+## @section Monitoring
+## @param monitoring.enabled Enabled monitoring
+## @param monitoring.prometheus.enabled Adds sidecar
+## @param monitoring.prometheus.image Sidecar image
+## @param monitoring.prometheus.imagePullPolicy Sidecar pull policy
 monitoring:
   enabled: false
   # Add the nginx prometheus exporter sidecar
