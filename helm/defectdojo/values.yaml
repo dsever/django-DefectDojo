@@ -71,6 +71,7 @@ tag: latest
 podLabels: {}
 
 ## @skip securityContext
+## @param securityContext Pod Security Context
 securityContext:
   enabled: true
   djangoSecurityContext:
