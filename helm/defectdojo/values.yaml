@@ -8,17 +8,14 @@ createRabbitMqSecret: false
 createRedisSecret: false
 # @param createMysqlSecret create mysql secret in defectdojo chart, outside of mysql chart
 createMysqlSecret: false
-# create postgresql secret in defectdojo chart, outside of postgresql chart
+## @param create postgresql secret in defectdojo chart, outside of postgresql chart
 createPostgresqlSecret: false
-# create postgresql-ha secret in defectdojo chart, outside of postgresql-ha chart
+## @param createPostgresqlHaSecret create postgresql-ha secret in defectdojo chart, outside of postgresql-ha chart
 createPostgresqlHaSecret: false
-# create postgresql-ha-pgpool secret in defectdojo chart, outside of postgresql-ha chart
+## @param createPostgresqlHaPgpoolSecret create postgresql-ha-pgpool secret in defectdojo chart, outside of postgresql-ha chart
 createPostgresqlHaPgpoolSecret: false
-# Track configuration (trackConfig): will automatically respin application pods in case of config changes detection
-# can be:
-# - disabled, default
-# - enabled, enables tracking configuration changes based on SHA256
-# trackConfig: disabled
+## @param trackConfig will automatically respin application pods in case of config changes detection, disabled (default)/enabled
+trackConfig: disabled
 
 # Enables application network policy
 # For more info follow https://kubernetes.io/docs/concepts/services-networking/network-policies/
