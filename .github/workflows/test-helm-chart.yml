@@ -1,3 +1,4 @@
+---
 name: Lint Helm chart
 on:
   pull_request:
@@ -72,4 +73,3 @@ jobs:
       # - name: Run chart-testing (install)
       #   run: ct install --config ct.yaml --target-branch ${{ env.ct-branch }} --helm-extra-args '--set createSecret=true --set createRabbitMqSecret=true --set createPostgresqlSecret=true --set timeout=900'
       #  if: env.changed == 'true'
----
