@@ -14,7 +14,7 @@ dependencies:
     repository: "@bitnami"
     condition: mysql.enabled
   - name: postgresql
-    version: ~11.6.5
+    version: ~11.6.4
     repository: "@bitnami"
     condition: postgresql.enabled
   - name: postgresql-ha
