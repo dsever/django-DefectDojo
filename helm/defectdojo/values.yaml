@@ -427,7 +427,7 @@ postgresqlha:
 cloudsql:
   ## @param enabled To use CloudSQL in GKE set 'enable: true'
   enabled: false
-  # By default, the proxy has verbose logging. Set this to false to make it less verbose
+  ## @param verbose the proxy has verbose logging. Set this to false to make it less verbose
   verbose: true
   image:
     # set repo and image tag of gce-proxy
