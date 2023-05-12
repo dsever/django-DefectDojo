@@ -1,3 +1,4 @@
+import functools
 from functools import wraps
 from dojo.models import Finding, Dojo_User
 from django.db import models
@@ -186,3 +187,16 @@ def dojo_ratelimit(key='ip', rate=None, method=ALL, block=False):
             return fn(request, *args, **kw)
         return _wrapped
     return decorator
+
+
+# decorator is here to help not to trigger signals for service_account
+def ignore_service_account(func):
+
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        user = kwargs['instance']
+        if user.first_name == 'service_account':
+            return
+        return func(*args, **kwargs)
+    return wrapper
+

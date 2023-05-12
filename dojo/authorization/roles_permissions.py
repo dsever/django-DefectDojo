@@ -42,6 +42,7 @@ class Permissions(IntEnum):
     Product_Configure_Notifications = 1106
     Product_Edit = 1107
     Product_Delete = 1108
+    Product_Fetch_API_Key = 1109
 
     Engagement_View = 1202
     Engagement_Add = 1203
@@ -466,6 +467,7 @@ def get_roles_with_permissions():
             Permissions.Product_Configure_Notifications,
             Permissions.Product_Edit,
             Permissions.Product_Delete,
+            Permissions.Product_Fetch_API_Key,
 
             Permissions.Engagement_View,
             Permissions.Engagement_Add,

@@ -66,4 +66,6 @@ urlpatterns = [
         name='edit_product_group'),
     re_path(r'^product/group/(?P<groupid>\d+)/delete$', views.delete_product_group,
         name='delete_product_group'),
+    re_path(r'^product/(?P<pid>\d+)/fetch_api_key$', views.fetch_api_key,
+            name='fetch_api_key'),
 ]

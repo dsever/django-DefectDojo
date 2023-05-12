@@ -21,6 +21,7 @@ from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.translation import gettext as _
+from rest_framework.authtoken.models import Token
 
 from dojo.templatetags.display_tags import asvs_calc_level
 from dojo.filters import ProductEngagementFilter, ProductFilter, EngagementFilter, MetricsEndpointFilter, \
@@ -35,7 +36,7 @@ from dojo.forms import ProductForm, EngForm, DeleteProductForm, DojoMetaDataForm
 from dojo.models import Product_Type, Note_Type, Finding, Product, Engagement, Test, GITHUB_PKey, \
     Test_Type, System_Settings, Languages, App_Analysis, Benchmark_Product_Summary, Endpoint_Status, \
     Endpoint, Engagement_Presets, DojoMeta, Notifications, BurpRawRequestResponse, Product_Member, \
-    Product_Group, Product_API_Scan_Configuration
+    Product_Group, Product_API_Scan_Configuration, Dojo_User, Role
 from dojo.utils import add_external_issue, add_error_message_to_response, add_field_errors_to_response, get_page_items, \
     add_breadcrumb, async_delete, \
     get_system_setting, get_setting, Product_Tab, get_punchcard_data, queryset_check, is_title_in_breadcrumbs, \
@@ -44,7 +45,7 @@ from dojo.utils import add_external_issue, add_error_message_to_response, add_fi
 from dojo.notifications.helper import create_notification
 from dojo.components.sql_group_concat import Sql_GroupConcat
 from dojo.authorization.authorization import user_has_permission, user_has_permission_or_403
-from dojo.authorization.roles_permissions import Permissions
+from dojo.authorization.roles_permissions import Permissions, Roles
 from dojo.authorization.authorization_decorators import user_is_authorized
 from dojo.product.queries import get_authorized_products, get_authorized_members_for_product, \
     get_authorized_groups_for_product
@@ -1798,3 +1799,24 @@ def add_product_group(request, pid):
         'form': group_form,
         'product_tab': product_tab,
     })
+
+@user_is_authorized(Product, Permissions.Product_Fetch_API_Key, 'pid')
+def fetch_api_key(request, pid):
+    logger.info('Product_id:{0}'.format(pid))
+
+    product = Product.objects.get(pk=pid)
+    user, us_created = Dojo_User.objects.get_or_create(username="s_{0}".format(product), first_name='service_account')
+    token, created = Token.objects.get_or_create(user=user)
+    if us_created:
+        product_member = Product_Member()
+        product_member.product = product
+        product_member.user = user
+        product_member.role = Role.objects.get(name="API_Importer")
+        product_member.save()
+        messages.add_message(
+            request,
+            messages.INFO,
+            'Audit logging is currently disabled in System Settings.',
+            extra_tags='alert-danger')
+
+    return HttpResponseRedirect(reverse('view_product', args=(pid,)))

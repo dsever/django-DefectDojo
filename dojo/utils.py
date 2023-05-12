@@ -39,7 +39,7 @@ import crum
 from dojo.celery import app
 from dojo.decorators import dojo_async_task, dojo_model_from_id, dojo_model_to_id
 from django.contrib.auth.signals import user_logged_in, user_logged_out, user_login_failed
-
+from dojo.decorators import ignore_service_account
 
 logger = logging.getLogger(__name__)
 deduplicationLogger = logging.getLogger("dojo.specific-loggers.deduplication")
@@ -1644,6 +1644,7 @@ def get_site_url():
 
 @receiver(post_save, sender=User)
 @receiver(post_save, sender=Dojo_User)
+@ignore_service_account
 def user_post_save(sender, instance, created, **kwargs):
     # For new users we create a Notifications object so the default 'alert' notifications work and
     # assign them to a default group if specified in the system settings.
