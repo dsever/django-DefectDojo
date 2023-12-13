@@ -25,13 +25,14 @@ jobs:
   release-chart:
     runs-on: ubuntu-latest
     steps:
-      
+
       - name: Checkout
         uses: actions/checkout@v3
         with:
           ref: master
           fetch-depth: 0
-      
+
+
       # This action is deprecated. Not sure if it is even being used anymore...
       # - name: Get upload URL
       #   id: get-upload-url
@@ -39,30 +40,36 @@ jobs:
       #   with:
       #     tag: ${{ github.event.inputs.release_number }}
       #     token: ${{ github.token }}
-      
+
       - name: Configure git
         run: |
           git config --global user.name "${{ env.GIT_USERNAME }}"
           git config --global user.email "${{ env.GIT_EMAIL }}"
-      
+
       - name: Install Helm
         uses: azure/setup-helm@v3
         with:
           version: v3.4.0
-      
+
       - name: Configure HELM repos
         run: |-
              helm repo add bitnami https://charts.bitnami.com/bitnami
              helm dependency list ./helm/defectdojo
              helm dependency update ./helm/defectdojo
-      
+
+      - name: Pin current docker image
+        id: pin_image
+        uses: mikefarah/yq@master
+        cmd: |-
+          yq --version
+
       - name: Package Helm chart
         id: package-helm-chart
         run: |
           mkdir build
           helm package helm/defectdojo/ --destination ./build
           echo "chart_version=$(ls build | cut -d '-' -f 2 | sed 's|\.tgz||')" >> $GITHUB_ENV
-      
+
       - name: Create release ${{ github.event.inputs.release_number }}
         uses: softprops/action-gh-release@v1
         with:
@@ -75,7 +82,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
         env:
           GITHUB_REPOSITORY: DefectDojo/django-DefectDojo
-      
+
       - name: Update Helm repository index
         id: update-helm-repository-index
         run: |
