@@ -60,7 +60,7 @@ jobs:
       - name: Pin current docker image
         id: pin_image
         uses: mikefarah/yq@master
-        cmd: |-
+        run: |-
           yq --version
           yq -i '.tag=${{ github.event.inputs.release_number }}'  helm/defectdojo/values.yaml
           echo "Current image tag:`yq -r '.tag' helm/defectdojo/values.yaml`"
