@@ -63,6 +63,7 @@ jobs:
         cmd: |-
           yq --version
           yq -i '.tag=${{ github.event.inputs.release_number }}'  helm/defectdojo/values.yaml
+          echo "Current image tag:`yq -r '.tag' helm/defectdojo/values.yaml`"
 
       - name: Package Helm chart
         id: package-helm-chart
