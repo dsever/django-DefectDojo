@@ -62,6 +62,7 @@ jobs:
         uses: mikefarah/yq@master
         cmd: |-
           yq --version
+          yq -i '.tag=${{ github.event.inputs.release_number }}'  helm/defectdojo/values.yaml
 
       - name: Package Helm chart
         id: package-helm-chart
