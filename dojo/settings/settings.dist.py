@@ -490,7 +490,6 @@ PASSWORD_HASHERS = [
     'django.contrib.auth.hashers.MD5PasswordHasher',
     'django.contrib.auth.hashers.UnsaltedSHA1PasswordHasher',
     'django.contrib.auth.hashers.UnsaltedMD5PasswordHasher',
-    'django.contrib.auth.hashers.CryptPasswordHasher',
 ]
 
 SOCIAL_AUTH_PIPELINE = (
@@ -1245,6 +1244,7 @@ HASHCODE_FIELDS_PER_SCANNER = {
     'HCLAppScan XML': ['title', 'description'],
     'KICS Scan': ['file_path', 'line', 'severity', 'description', 'title'],
     'MobSF Scan': ['title', 'description', 'severity'],
+    'Snyk Code Scan': ['vuln_id_from_tool', 'file_path']
 }
 
 # Override the hardcoded settings here via the env var
@@ -1455,6 +1455,7 @@ DEDUPLICATION_ALGORITHM_PER_PARSER = {
     'HCLAppScan XML': DEDUPE_ALGO_HASH_CODE,
     'KICS Scan': DEDUPE_ALGO_HASH_CODE,
     'MobSF Scan': DEDUPE_ALGO_HASH_CODE,
+    'Nosey Parker Scan': DEDUPE_ALGO_UNIQUE_ID_FROM_TOOL_OR_HASH_CODE,
 }
 
 # Override the hardcoded settings here via the env var
@@ -1700,11 +1701,3 @@ USE_FIRST_SEEN = env('DD_USE_FIRST_SEEN')
 # Reference issue: https://github.com/jazzband/django-polymorphic/issues/229
 warnings.filterwarnings("ignore", message="polymorphic.base.ManagerInheritanceWarning.*")
 warnings.filterwarnings("ignore", message="PolymorphicModelBase._default_manager.*")
-
-
-# TODO - these warnings needs to be removed after all warnings have been removed
-if DEBUG:
-    from django.utils.deprecation import RemovedInDjango50Warning
-    warnings.filterwarnings("ignore", category=RemovedInDjango50Warning)
-    warnings.filterwarnings("ignore", message="'cgi' is deprecated and slated for removal in Python 3\\.13")
-    warnings.filterwarnings("ignore", message="unclosed file .+")
