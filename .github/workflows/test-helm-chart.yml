@@ -36,7 +36,9 @@ jobs:
 
       - name: Set up chart-testing
         uses: helm/chart-testing-action@v2.6.1
-
+        with:
+          yamale_version: 4.0.4
+          
       - name: Determine target branch
         id: ct-branch-target
         run: |
