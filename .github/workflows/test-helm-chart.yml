@@ -38,6 +38,7 @@ jobs:
         uses: helm/chart-testing-action@v2.6.1
         with:
           yamale_version: 4.0.4
+          yamllint_version: 1.35.1
           
       - name: Determine target branch
         id: ct-branch-target
