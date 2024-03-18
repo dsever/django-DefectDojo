@@ -12,7 +12,14 @@
     "commitMessageExtra": "from {{currentVersion}} to {{#if isMajor}}v{{{newMajor}}}{{else}}{{#if isSingleVersion}}v{{{toVersion}}}{{else}}{{{newValue}}}{{/if}}{{/if}}",
     "commitMessageSuffix": "({{packageFile}})",
     "labels": ["dependencies"]
-  }],
+  },
+  {
+    "matchManagers": ["helmv3"],
+    "matchUpdateTypes": ["major"],
+    "description": "Ignore major for helm",
+    "enabled": false
+  }
+  ],
   "registryAliases": {
     "bitnami": "https://charts.bitnami.com/bitnami"
   }
